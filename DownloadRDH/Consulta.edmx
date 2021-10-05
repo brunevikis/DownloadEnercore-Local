@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IPDOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'IPDO.dbo.CONSULTA_VAZAO_RDH' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CONSULTA_VAZAO_RDH">
+          <Key>
+            <PropertyRef Name="data" />
+            <PropertyRef Name="posto" />
+            <PropertyRef Name="fonte" />
+          </Key>
+          <Property Name="data" Type="datetime" Nullable="false" />
+          <Property Name="posto" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="qnat" Type="int" />
+          <Property Name="qinc" Type="float" />
+          <Property Name="fonte" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="IPDOModelStoreContainer">
+          <EntitySet Name="CONSULTA_VAZAO_RDH" EntityType="Self.CONSULTA_VAZAO_RDH" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CONSULTA_VAZAO_RDH].[data] AS [data], 
+    [CONSULTA_VAZAO_RDH].[posto] AS [posto], 
+    [CONSULTA_VAZAO_RDH].[qnat] AS [qnat], 
+    [CONSULTA_VAZAO_RDH].[qinc] AS [qinc], 
+    [CONSULTA_VAZAO_RDH].[fonte] AS [fonte]
+    FROM [dbo].[CONSULTA_VAZAO_RDH] AS [CONSULTA_VAZAO_RDH]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IPDOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CONSULTA_VAZAO_RDH">
+          <Key>
+            <PropertyRef Name="data" />
+            <PropertyRef Name="posto" />
+            <PropertyRef Name="fonte" />
+          </Key>
+          <Property Name="data" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="posto" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="qnat" Type="Int32" />
+          <Property Name="qinc" Type="Double" />
+          <Property Name="fonte" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="IPDOEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CONSULTA_VAZAO_RDH" EntityType="Self.CONSULTA_VAZAO_RDH" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IPDOModelStoreContainer" CdmEntityContainer="IPDOEntities">
+          <EntitySetMapping Name="CONSULTA_VAZAO_RDH">
+            <EntityTypeMapping TypeName="IPDOModel.CONSULTA_VAZAO_RDH">
+              <MappingFragment StoreEntitySet="CONSULTA_VAZAO_RDH">
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="posto" ColumnName="posto" />
+                <ScalarProperty Name="qnat" ColumnName="qnat" />
+                <ScalarProperty Name="qinc" ColumnName="qinc" />
+                <ScalarProperty Name="fonte" ColumnName="fonte" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
