@@ -271,7 +271,7 @@ namespace DownloadCompass
 
                 con.Data = Data;
 
-                
+
 
                 try
                 {
@@ -783,8 +783,8 @@ namespace DownloadCompass
             {
                 DownAcomph.BackColor = Color.Yellow;
 
-
                 await con.DownloadAcomph("https://sintegre.ons.org.br/sites/9/13/56/Produtos/230/ACOMPH_" + Data.ToString("dd.MM.yyyy") + ".xls");
+
                 DownAcomph.BackColor = Color.Green;
             }
             catch { DownAcomph.BackColor = Color.Red; }

@@ -381,7 +381,6 @@ namespace DownloadCompass
 
             try
             {
-
                 byte[] content = null;
                 string acomphPath = Path.Combine("H:\\Middle - Preço\\Acompanhamento de vazões\\ACOMPH\\1_historico", Data.ToString("yyyy"), Data.ToString("MM_yyyy"));
 
@@ -440,6 +439,7 @@ namespace DownloadCompass
         {
             try
             {
+
                 byte[] content = null;
 
                 string ipdoPath = Path.Combine(@"P:\RISCO\IPDO", Data.AddDays(-1).ToString("MM_yyyy"));
@@ -471,23 +471,26 @@ namespace DownloadCompass
                             Directory.CreateDirectory(ipdoPath);
                         }
                         File.WriteAllBytes(full_Path, content);
-                        addHistory(Path.Combine(ipdoPath, "IPDO_History.txt"), "Download_Compass" + nameFile + DateTime.Now.ToString(" dd-MM-yyyy HH:mm:ss"));
 
                         try
                         {
-                            var tup = System.Diagnostics.Process.Start(@"H:\TI - Sistemas\UAT\IPDO\Application Files\CurrentVersion\IPDO_Compass.exe", full_Path);
-                            tup.WaitForExit();
+                            addHistory(Path.Combine(ipdoPath, "IPDO_History.txt"), "Download_Compass" + nameFile + DateTime.Now.ToString(" dd-MM-yyyy HH:mm:ss"));
 
+                            IPDODB ipdoDb = new IPDODB();
+                            ipdoDb.LoadProcess(full_Path);
+                            //var tup = System.Diagnostics.Process.Start(@"H:\TI - Sistemas\UAT\IPDO\Application Files\CurrentVersion\IPDO_Compass.exe", full_Path);
+                            //tup.WaitForExit();
+                            await Tools.SendMail(
+                            Path.Combine(ipdoPath, nameFile), "IPDO baixado e salvo com sucesso! Via Download-Compass", nameFile + " [AUTO]", "preco");//TODO: preco
                         }
                         catch (Exception eer)
                         {
                             await Tools.SendMail(
-                           Path.Combine(ipdoPath, nameFile), "Erro ao carregar IPDO no Banco de Dados! Via Download-Compass", nameFile + " [AUTO]", "desenv");//TODO: preco
+                         Path.Combine(ipdoPath, nameFile), "Erro ao carregar IPDO no Banco de Dados! Via Download-Compass" + eer.Message, nameFile + " [AUTO]", "desenv");//TODO: preco
 
                         }
 
-                        await Tools.SendMail(
-                            Path.Combine(ipdoPath, nameFile), "IPDO baixado e salvo com sucesso! Via Download-Compass", nameFile + " [AUTO]", "preco");//TODO: preco
+
                     }
                 }
 
@@ -813,7 +816,7 @@ namespace DownloadCompass
                                     //}
 
                                     ZipFile.ExtractToDirectory(Path.Combine(EtaPath, nameFile), EtaPath);
-                                   // ZipFile.ExtractToDirectory(Path.Combine(EtaPath, nameFile), oneDrive_Dados);
+                                    // ZipFile.ExtractToDirectory(Path.Combine(EtaPath, nameFile), oneDrive_Dados);
 
                                 }
                                 contagem = System.IO.Directory.GetFiles(EtaPath, "ETA40_p" + Data.ToString("ddMMyy") + "*").ToList();
@@ -1124,18 +1127,18 @@ namespace DownloadCompass
             string nameFile = ("oshad_{0}_d.gif");
             string direPath = "P:\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
-            var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
+            //var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
+            //var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
-            var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
+            //var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
 
-            string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            if (Directory.Exists(oneDrive))
-            {
-                direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
-            }
+            //if (Directory.Exists(oneDrive))
+            //{
+            //    direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //}
 
             //string address50 = addressDownload + nameFile;
             try
@@ -1154,39 +1157,39 @@ namespace DownloadCompass
                             {
                                 case 1:
                                     File.WriteAllBytes(Path.Combine(direPath, "Sao Francisco", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Sao Francisco", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Sao Francisco", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Sao Francisco", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Sao Francisco", "observado.gif"), temp);
                                     break;
                                 case 2:
                                     File.WriteAllBytes(Path.Combine(direPath, "Grande", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Grande", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Grande", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Grande", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Grande", "observado.gif"), temp);
                                     break;
                                 case 3:
                                     File.WriteAllBytes(Path.Combine(direPath, "Paranaiba", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Paranaiba", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Paranaiba", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranaiba", "observado.gif"), temp);
+                                    // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranaiba", "observado.gif"), temp);
                                     break;
                                 case 4:
                                     File.WriteAllBytes(Path.Combine(direPath, "Uruguai", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Uruguai", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Uruguai", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Uruguai", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Uruguai", "observado.gif"), temp);
                                     break;
                                 case 5:
                                     File.WriteAllBytes(Path.Combine(direPath, "Parana", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Parana", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Parana", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "observado.gif"), temp);
+                                    // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "observado.gif"), temp);
                                     break;
                                 case 6:
                                     File.WriteAllBytes(Path.Combine(direPath, "Tocantins", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Tocantins", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Tocantins", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tocantins", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tocantins", "observado.gif"), temp);
                                     break;
                                 /*case 11:
                                     File.WriteAllBytes(Path.Combine(direPath, "Parnaiba", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
@@ -1196,35 +1199,35 @@ namespace DownloadCompass
                                     break;*/
                                 case 13:
                                     File.WriteAllBytes(Path.Combine(direPath, "Iguacu", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Iguacu", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Iguacu", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Iguacu", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Iguacu", "observado.gif"), temp);
                                     break;
                                 /*case 14:
                                     File.WriteAllBytes(Path.Combine(direPath, "Manso", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
                                     break;*/
                                 case 25:
                                     File.WriteAllBytes(Path.Combine(direPath, "Paranapanema", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "observado.gif"), temp);
+                                    // File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "observado.gif"), temp);
+                                    // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "observado.gif"), temp);
                                     break;
                                 case 26:
                                     File.WriteAllBytes(Path.Combine(direPath, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
                                     break;
                                 case 50:
                                     File.WriteAllBytes(Path.Combine(direPath, "ETA", "observado.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "ETA", "observado.gif"), temp);
+                                    // File.WriteAllBytes(Path.Combine(direDrivePath, "ETA", "observado.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ETA", "observado.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ETA", "observado.gif"), temp);
 
                                     File.WriteAllBytes(Path.Combine(direPath, "OBSERVADO", "ons.gif"), temp);
-                                    File.WriteAllBytes(Path.Combine(direDrivePath, "OBSERVADO", "ons.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(direDrivePath, "OBSERVADO", "ons.gif"), temp);
 
-                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "OBSERVADO", "ons.gif"), temp);
+                                    //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "OBSERVADO", "ons.gif"), temp);
                                     break;
                             }
                         }
@@ -1248,18 +1251,18 @@ namespace DownloadCompass
             string nameFile = string.Empty;
             string direPath = "P:\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
-            var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
+            //var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
+            //var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
-            var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
+            //var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
 
-            string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            if (Directory.Exists(oneDrive))
-            {
-                direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
-            }
+            //if (Directory.Exists(oneDrive))
+            //{
+            //    direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //}
 
             //1 2 3 4 5 6 11 12 13 14 25 26
             try
@@ -1320,39 +1323,39 @@ namespace DownloadCompass
                         {
                             case "1":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "2":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Grande", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Grande", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Grande", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Grande", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Grande", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "3":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "4":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Uruguai", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Uruguai", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Uruguai", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "5":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Parana", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Parana", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Parana", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Parana", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Parana", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "6":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Tocantins", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Tocantins", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Tocantins", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Tocantins", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Tocantins", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "11":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Parnaiba", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
@@ -1364,9 +1367,9 @@ namespace DownloadCompass
                                 break;*/
                             case "13":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Iguacu", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Iguacu", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Iguacu", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "14":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Manso", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
@@ -1374,21 +1377,21 @@ namespace DownloadCompass
                                 break;*/
                             case "25":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "26":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
                                 break;
                             case "50":
                                 File.WriteAllBytes(Path.Combine(direPath, "ECMWF_Gif", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Gif", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ECMWF_Gif", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Gif", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ECMWF_Gif", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                         }
                     }
@@ -1414,19 +1417,19 @@ namespace DownloadCompass
 
             string nameFile = string.Empty;
             string direPath = "P:\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
-            var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
-            var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
+            //var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
+            //ar oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
 
-            var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
+            //var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
 
-            string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            if (Directory.Exists(oneDrive))
-            {
-                direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
-            }
+            //if (Directory.Exists(oneDrive))
+            //{
+            //    direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //}
 
             //1 2 3 4 5 6 11 12 13 14 25 26
             try
@@ -1487,42 +1490,42 @@ namespace DownloadCompass
                         {
                             case "1":
                                 File.WriteAllBytes(Path.Combine(direPath, "Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
 
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Sao Francisco", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "2":
                                 File.WriteAllBytes(Path.Combine(direPath, "Grande", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Grande", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "Grande", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Grande", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Grande", "prev" + idImg + ".gif"), content.Item2);
 
 
                                 break;
                             case "3":
                                 File.WriteAllBytes(Path.Combine(direPath, "Paranaiba", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "Paranaiba", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranaiba", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "4":
                                 File.WriteAllBytes(Path.Combine(direPath, "Uruguai", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "Uruguai", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Uruguai", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "5":
                                 File.WriteAllBytes(Path.Combine(direPath, "Parana", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Parana", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "Parana", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "6":
                                 File.WriteAllBytes(Path.Combine(direPath, "Tocantins", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Tocantins", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "Tocantins", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tocantins", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tocantins", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "11":
                                 File.WriteAllBytes(Path.Combine(direPath, "Parnaiba", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
@@ -1532,30 +1535,29 @@ namespace DownloadCompass
                                 break;*/
                             case "13":
                                 File.WriteAllBytes(Path.Combine(direPath, "Iguacu", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "Iguacu", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Iguacu", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "14":
                                 File.WriteAllBytes(Path.Combine(direPath, "Manso", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
                                 break;*/
                             case "25":
                                 File.WriteAllBytes(Path.Combine(direPath, "Paranapanema", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "prev" + idImg + ".gif"), content.Item2);
-
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "26":
                                 File.WriteAllBytes(Path.Combine(direPath, "Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
+                                                                                                                             // File.WriteAllBytes(Path.Combine(direDrivePath, "Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
                                 break;
                             case "50":
                                 File.WriteAllBytes(Path.Combine(direPath, "ETA", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "ETA", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "ETA", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ETA", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "ETA", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                         }
                     }
@@ -1849,8 +1851,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 //C:\Compass\MinhaTI\Alex Freires Marques - Compass\Trading
 
 
-               // var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
-               // var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
+                // var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
+                // var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
                 //var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
@@ -1929,18 +1931,18 @@ $"<p><pre></pre></p>" + $"</body></html>";
                     Directory.CreateDirectory(Path.Combine(direDrivePath, "ETA"));*/
 
                 //--------------------------------------------------------------------------------
-               /* if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Sao Francisco")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Sao Francisco"));
-                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Grande")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Grande"));
-                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Paranaiba")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Paranaiba"));
-                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Uruguai")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Uruguai"));
-                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Parana")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Parana"));
-                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Tocantins")))
-                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Tocantins"));*/
+                /* if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Sao Francisco")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Sao Francisco"));
+                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Grande")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Grande"));
+                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Paranaiba")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Paranaiba"));
+                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Uruguai")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Uruguai"));
+                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Parana")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Parana"));
+                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Tocantins")))
+                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Tocantins"));*/
                 /*if (!Directory.Exists(Path.Combine(direPath, "Parnaiba")))
                     Directory.CreateDirectory(Path.Combine(direPath, "Parnaiba"));
                 if (!Directory.Exists(Path.Combine(direPath, "Paraiba")))
@@ -2704,19 +2706,19 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string direPath = "P:\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
 
-            var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
-            var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
+            //var oneDrive_equip = Path.Combine(@"C:\Compass\MinhaTI\Preço - Documentos\Acompanhamento_de_Precipitacao");
+            //var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
 
-            var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
+            //var oneDrive = @"C:\Compass\OneDrive - MinhaTI\Compass\Trading";
 
-            string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //string direDrivePath = "C:\\Compass\\MinhaTI\\Alex Freires Marques - Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
 
-            if (Directory.Exists(oneDrive))
-            {
-                direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
-            }
+            //if (Directory.Exists(oneDrive))
+            //{
+            //    direDrivePath = "C:\\Compass\\OneDrive - MinhaTI\\Compass\\Trading\\Acompanhamento Metereologico Semanal\\spiderman\\" + Data.ToString("yyyy_MM_dd");
+            //}
 
             try
             {
@@ -2777,28 +2779,28 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                 break;*/
                             case "2":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Grande", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Grande", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Grande", "prev" + idImg + ".gif"), content.Item2);
 
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Grande", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Grande", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "3":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Paranaiba", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "4":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Uruguai", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Uruguai", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Uruguai", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Uruguai", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             case "5":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Parana", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Parana", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Parana", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Parana", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Parana", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "6":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Tocantins", "prev" + idImg + ".gif"), content.Item2);
@@ -2811,27 +2813,27 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                 break;*/
                             case "13":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Iguacu", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Iguacu", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Iguacu", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Iguacu", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "14":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Manso", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
                                 break;*/
                             case "25":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
+                                // File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS_Paranapanema", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                             /*case "26":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS_Tiete", "prev" + idImg + ".gif"), content.Item2); //TODO: Não existe essa pasta, possivelmente de erro
                                 break;*/
                             case "50":
                                 File.WriteAllBytes(Path.Combine(direPath, "GEFS", "prev" + idImg + ".gif"), content.Item2);
-                                File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(direDrivePath, "GEFS", "prev" + idImg + ".gif"), content.Item2);
 
-                                File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS", "prev" + idImg + ".gif"), content.Item2);
+                                //File.WriteAllBytes(Path.Combine(oneDrive_Gif, "GEFS", "prev" + idImg + ".gif"), content.Item2);
                                 break;
                         }
                     }
@@ -2950,7 +2952,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                                     SMAPDirectoryCopy(d, Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "SMAP"), true);
                                 }
-                               
+
                                 else if (name == "CPINS")
                                 {
 
@@ -4507,8 +4509,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string fileCon = "Consistido_" + RVatual.revDate.ToString("yyyyMM") + revisao;
             string fileNao = "Nao_Consistido_" + RVnext.revDate.ToString("yyyyMM") + revisao;
 
-            var pathCon = Path.Combine(@"N:\Middle - Preço\Acompanhamento de vazões", RVatual.revDate.ToString("MM_yyyy"), "RV" + RVatual.rev);
-            var pathNao = Path.Combine(@"N:\Middle - Preço\Acompanhamento de vazões", RVnext.revDate.ToString("MM_yyyy"), "RV" + RVnext.rev);
+            var pathCon = Path.Combine(@"H:\Middle - Preço\Acompanhamento de vazões", RVatual.revDate.ToString("MM_yyyy"), "RV" + RVatual.rev);
+            var pathNao = Path.Combine(@"H:\Middle - Preço\Acompanhamento de vazões", RVnext.revDate.ToString("MM_yyyy"), "RV" + RVnext.rev);
 
 
             if (!File.Exists(Path.Combine(pathCon, fileCon + ".zip")))
@@ -4994,7 +4996,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                             //string executar = @" / c " + "N: & cd Middle - Preço\\16_Chuva_Vazao\\Conjunto-PastasEArquivos/ & Rscript.exe P:\\Pedro\\remoção_R\\scripts\\ons.R convert_psat_remvies_V2.R";
                             //System.Diagnostics.Process.Start("CMD.exe", executar).WaitForExit();
 
-                            var path_Conj = Path.Combine(@"N:\Middle - Preço\16_Chuva_Vazao");
+                            var path_Conj = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao");
 
                             if (File.Exists(Path.Combine(path_Conj, "Conjunto-PastasEArquivos.zip")))
                             {
@@ -5025,23 +5027,25 @@ $"<p><pre></pre></p>" + $"</body></html>";
         {
             var currRev = Tools.GetCurrRev(DateTime.Today);
             //N:\Middle - Preço\Acompanhamento de vazões\09_2020\Dados_de_Entrada_e_Saida_202009_RV2\Modelos_Chuva_Vazao
-            var pastaModelos = @"N:\Middle - Preço\Acompanhamento de vazões\" + currRev.revDate.ToString("MM_yyyy") + @"\Dados_de_Entrada_e_Saida_" + currRev.revDate.ToString("yyyyMM") + "_RV" + currRev.rev.ToString() + @"\Modelos_Chuva_Vazao" + shadow + @"\SMAP";
+            var pastaModelos = @"H:\Middle - Preço\Acompanhamento de vazões\" + currRev.revDate.ToString("MM_yyyy") + @"\Dados_de_Entrada_e_Saida_" + currRev.revDate.ToString("yyyyMM") + "_RV" + currRev.rev.ToString() + @"\Modelos_Chuva_Vazao" + shadow + @"\SMAP";
             var bacias = Directory.GetDirectories(pastaModelos);
 
             List<Tuple<string, string, string>> dadosPsat = new List<Tuple<string, string, string>>();
             var arquivosRepo = Directory.GetFiles(Path.Combine(PathPsath, pastaPsat + "repo"));
             for (DateTime d = dataInicio; d <= dataFinal; d = d.AddDays(1))
             {
-                var arq = arquivosRepo.Where(x => Path.GetFileName(x).Contains(d.ToString("ddMMyyyy"))).First();
-
-                var linhasPsat = File.ReadAllLines(arq);
-                foreach (var linha in linhasPsat)
+                try
                 {
-                    var dad = linha.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    dadosPsat.Add(new Tuple<string, string, string>(dad[0], d.ToString("dd/MM/yyyy"), dad[3]));
+                    var arq = arquivosRepo.Where(x => Path.GetFileName(x).Contains(d.ToString("ddMMyyyy"))).First();
+
+                    var linhasPsat = File.ReadAllLines(arq);
+                    foreach (var linha in linhasPsat)
+                    {
+                        var dad = linha.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        dadosPsat.Add(new Tuple<string, string, string>(dad[0], d.ToString("dd/MM/yyyy"), dad[3]));
+                    }
                 }
-
-
+                catch { }
             }
             foreach (var bac in bacias)
             {
@@ -5212,21 +5216,36 @@ $"<p><pre></pre></p>" + $"</body></html>";
             byte[] content = null;
 
             //string fileCon = addressDownload.Split('/').Last();
+            DateTime dataArq = Data;
+            DateTime dataAtual = Data;
 
+
+
+            string PathPsath = Path.Combine("H:\\Middle - Preço\\Acompanhamento de Precipitação\\Observado_Satelite", dataAtual.ToString("yyyy"), dataAtual.ToString("MM"));
+
+            string nomePsath = "psath_" + dataArq.ToString("ddMMyyyy") + ".zip";
 
 
             var pathCon = Path.Combine("H:\\Middle - Preço\\Acompanhamento de Precipitação\\Previsao_Numerica", Data.ToString("yyyyMM"));
             var pathConMes = Path.Combine("H:\\Middle - Preço\\Acompanhamento de Precipitação\\Previsao_Numerica", Data.ToString("yyyyMM"), Data.ToString("dd"));
             var filename = addressDownload.Split('/').Last();
 
-            var pastaDest = @"N:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada";
+            var pastaDest = @"H:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada";
             var pastaTemp = Path.Combine(pastaDest, "Temp");
 
             if (!Directory.Exists(pathConMes))
             {
                 Directory.CreateDirectory(pathConMes);
             }
-
+            //colocar verificacao do psat aqui
+            if (File.Exists(Path.Combine(PathPsath, nomePsath)) && !File.Exists(Path.Combine(pathConMes, "PsatOk.txt")))
+            {
+                if (File.Exists(Path.Combine(pathConMes, filename)))
+                {
+                    File.Delete(Path.Combine(pathConMes, filename));
+                }
+                File.WriteAllText(Path.Combine(pathConMes, "PsatOk.txt"), "Psat existente");
+            }
             if (!File.Exists(Path.Combine(pathConMes, filename)))
             {
                 content = await DownloadData(addressDownload);
@@ -5251,7 +5270,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                     //DirectoryCopy(Path.Combine(pastaTemp,"Trabalho"), pastaDest, true); 
                     Directory.Delete(pastaTemp, true);
 
-                    var path_Conj = Path.Combine(@"N:\Middle - Preço\16_Chuva_Vazao");
+                    var path_Conj = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao");
 
                     if (File.Exists(Path.Combine(path_Conj, "Conjunto-PastasEArquivos.zip")))
                     {
