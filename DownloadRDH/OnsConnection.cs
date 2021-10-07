@@ -233,7 +233,7 @@ namespace DownloadCompass
 
         public async Task DownloadVazoes(string vazaoAddress)
         {
-
+            
             byte[] content = null;  //Vazões Observadas - 18-02-2020 a 17-05-2020 (1).xlsx
 
             string vazaoPath = Path.Combine(@"H:\Middle - Preço\Acompanhamento de vazões\Vazoes_Observadas", Data.AddDays(-1).ToString("yyyy"), Data.AddDays(-1).ToString("MM_yyyy"));
@@ -4907,7 +4907,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
             string PathPsath = Path.Combine("H:\\Middle - Preço\\Acompanhamento de Precipitação\\Observado_Satelite", dataAtual.ToString("yyyy"), dataAtual.ToString("MM"));
             string PathPsathAno = Path.Combine("H:\\Middle - Preço\\Acompanhamento de Precipitação\\Observado_Satelite", dataAtual.ToString("yyyy"));
-            var pathObser = Path.Combine(@"N:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada\Observado");
+            var pathObser = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada\Observado");
 
             string nomePsath = "psath_" + dataArq.ToString("ddMMyyyy") + ".zip";
             string pastaPsat = "psath_" + dataArq.ToString("ddMMyyyy");
@@ -5129,7 +5129,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                             try
                             {
-                                string executar = @"/c " + "N: & cd Middle - Preço\\16_Chuva_Vazao\\Conjunto-PastasEArquivos/ & bat.bat";
+                                string executar = @"/c " + "H: & cd Middle - Preço\\16_Chuva_Vazao\\Conjunto-PastasEArquivos/ & bat.bat";
                                 System.Diagnostics.Process.Start("CMD.exe", executar).WaitForExit();
                                 //Thread t = new Thread(R_EXE);
                                 //t.Start();
