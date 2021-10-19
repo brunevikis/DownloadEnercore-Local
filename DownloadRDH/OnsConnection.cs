@@ -233,7 +233,7 @@ namespace DownloadCompass
 
         public async Task DownloadVazoes(string vazaoAddress)
         {
-            
+
             byte[] content = null;  //Vazões Observadas - 18-02-2020 a 17-05-2020 (1).xlsx
 
             string vazaoPath = Path.Combine(@"H:\Middle - Preço\Acompanhamento de vazões\Vazoes_Observadas", Data.AddDays(-1).ToString("yyyy"), Data.AddDays(-1).ToString("MM_yyyy"));
@@ -552,7 +552,7 @@ namespace DownloadCompass
             {
                 oneDrive_equip = oneDrive_equip.Replace("Energy Core Pricing - Documents", "Energy Core Pricing - Documentos");
             }
-            
+
             var oneDrive_Dados = Path.Combine(oneDrive_equip, "Previsao", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
@@ -779,7 +779,7 @@ namespace DownloadCompass
             }
 
 
-            
+
             var oneDrive_Dados = Path.Combine(oneDrive_equip, "Previsao", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
             DateTime Horaini = DateTime.Today.AddMinutes(435);
@@ -1073,7 +1073,7 @@ namespace DownloadCompass
             {
                 oneDrive_equip = oneDrive_equip.Replace("Energy Core Pricing - Documents", "Energy Core Pricing - Documentos");
             }
-            
+
             var oneDrive_Dados = Path.Combine(oneDrive_equip, "Previsao", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
@@ -1161,11 +1161,11 @@ namespace DownloadCompass
                 onedriveSpider = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman";
                 direDrivePath = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman\" + Data.ToString("yyyy_MM_dd");
             }
-            
+
             var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
-            
+
 
             //string address50 = addressDownload + nameFile;
             try
@@ -1210,7 +1210,7 @@ namespace DownloadCompass
                                     File.WriteAllBytes(Path.Combine(direPath, "Parana", "observado.gif"), temp);
                                     File.WriteAllBytes(Path.Combine(direDrivePath, "Parana", "observado.gif"), temp);
 
-                                     File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "observado.gif"), temp);
+                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Parana", "observado.gif"), temp);
                                     break;
                                 case 6:
                                     File.WriteAllBytes(Path.Combine(direPath, "Tocantins", "observado.gif"), temp);
@@ -1235,9 +1235,9 @@ namespace DownloadCompass
                                     break;*/
                                 case 25:
                                     File.WriteAllBytes(Path.Combine(direPath, "Paranapanema", "observado.gif"), temp);
-                                     File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "observado.gif"), temp);
+                                    File.WriteAllBytes(Path.Combine(direDrivePath, "Paranapanema", "observado.gif"), temp);
 
-                                     File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "observado.gif"), temp);
+                                    File.WriteAllBytes(Path.Combine(oneDrive_Gif, "Paranapanema", "observado.gif"), temp);
                                     break;
                                 case 26:
                                     File.WriteAllBytes(Path.Combine(direPath, "Tiete", "observado.gif"), temp); //TODO: Não existe essa pasta, possivelmente de erro
@@ -1285,24 +1285,24 @@ namespace DownloadCompass
             }
 
             var oneDrive = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documents\Trading";
-            
+
 
 
             string direDrivePath = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documents\Trading\Acompanhamento Metereologico Semanal\spiderman\" + Data.ToString("yyyy_MM_dd");
 
             if (!Directory.Exists(oneDrive))
             {
-                
+
                 direDrivePath = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman\" + Data.ToString("yyyy_MM_dd");
             }
 
-            
+
             var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
-            
 
-            
+
+
 
             //1 2 3 4 5 6 11 12 13 14 25 26
             try
@@ -1463,7 +1463,7 @@ namespace DownloadCompass
             {
                 oneDrive_equip = oneDrive_equip.Replace("Energy Core Pricing - Documents", "Energy Core Pricing - Documentos");
             }
-           
+
             var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
@@ -1479,9 +1479,9 @@ namespace DownloadCompass
                 direDrivePath = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman\" + Data.ToString("yyyy_MM_dd");
             }
 
-            
 
-            
+
+
 
 
             //1 2 3 4 5 6 11 12 13 14 25 26
@@ -2003,17 +2003,17 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                 //--------------------------------------------------------------------------------
                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Sao Francisco")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Sao Francisco"));
-                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Grande")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Grande"));
-                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Paranaiba")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Paranaiba"));
-                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Uruguai")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Uruguai"));
-                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Parana")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Parana"));
-                 if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Tocantins")))
-                     Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Tocantins"));
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Sao Francisco"));
+                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Grande")))
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Grande"));
+                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Paranaiba")))
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Paranaiba"));
+                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Uruguai")))
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Uruguai"));
+                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Parana")))
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Parana"));
+                if (!Directory.Exists(Path.Combine(oneDrive_Gif, "Tocantins")))
+                    Directory.CreateDirectory(Path.Combine(oneDrive_Gif, "Tocantins"));
                 /*if (!Directory.Exists(Path.Combine(direPath, "Parnaiba")))
                     Directory.CreateDirectory(Path.Combine(direPath, "Parnaiba"));
                 if (!Directory.Exists(Path.Combine(direPath, "Paraiba")))
@@ -2793,12 +2793,12 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 onedriveSpider = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman";
                 direDrivePath = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documentos\Trading\Acompanhamento Metereologico Semanal\spiderman\" + Data.ToString("yyyy_MM_dd");
             }
-            
+
             var oneDrive_Gif = Path.Combine(oneDrive_equip, "Mapas", Data.ToString("yyyy"), Data.ToString("MM"), Data.ToString("dd"));
 
 
 
-            
+
 
             try
             {
@@ -3765,6 +3765,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 //http://tr.ons.org.br/Content/Get/Carga_Norte
                 //http://tr.ons.org.br/Content/Get/Carga_Sul
                 //http://tr.ons.org.br/Content/Get/Carga_SIN
+                var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+
                 List<string> addressComp = new List<string> { "Carga_SudesteECentroOeste", "Carga_Nordeste", "Carga_Norte", "Carga_Sul", "Carga_SIN" };
                 string json = "";
                 List<Tuple<string, DateTime, int, Nullable<decimal>>> dados = new List<Tuple<string, DateTime, int, Nullable<decimal>>>();//Subsistema, minuto, valor
@@ -3875,7 +3877,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         else
                         {
                             var h = readHistory(downlog).First();
-                            var d = Convert.ToDateTime(h);
+                            var d = Convert.ToDateTime(h, Culture.DateTimeFormat);
                             DateTime logDay = new DateTime(d.Year, d.Month, d.Day);
                             DateTime dadosDay = new DateTime(dados.First().Item2.Year, dados.First().Item2.Month, dados.First().Item2.Day);
                             if (logDay == dadosDay)
@@ -3883,7 +3885,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                 var dates = readHistory(downlog).ToList();
                                 foreach (var date in dates)
                                 {
-                                    var dat = Convert.ToDateTime(date);
+                                    var dat = Convert.ToDateTime(date, Culture.DateTimeFormat);
                                     foreach (var dadoData in dados.Where(x => x.Item2 == dat).ToList())
                                     {
                                         dados.Remove(dadoData);
@@ -3925,6 +3927,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             //https://sintegre.ons.org.br/sites/9/51/Produtos/277/DS_ONS_112020_RV3D25.zip
 
             byte[] content = null;
+            var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
             DateTime dataSeg = Data.AddDays(1);
 
@@ -4025,7 +4028,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 }
                 var h = readHistory(downlog).Last();
 
-                var d = Convert.ToDateTime(h);
+                var d = Convert.ToDateTime(h,Culture.DateTimeFormat);
 
                 if (d <= DateTime.Now.AddMinutes(-45) && DateTime.Now > DateTime.Today.AddHours(12))
                 {
@@ -4180,7 +4183,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string nomeMes = Data.ToString("yyyy_MM");
             var pathNew = Path.Combine("Z:\\6_decomp\\03_Casos", nomeMes);
             var revisao = Tools.GetNextRev(Data.AddDays(-1)).rev;   // caso nao de certo trocar para Tools.GetCurrRev
-
+            var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
             var pathNewave = "";
             if (revisao == 0)
@@ -4490,7 +4493,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             }
             var h = readHistory(downlog).Last();
 
-            var da = Convert.ToDateTime(h);
+            var da = Convert.ToDateTime(h, Culture.DateTimeFormat);
 
             if (da <= DateTime.Now.AddMinutes(-60))
             {
@@ -4662,7 +4665,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
             string path = Path.Combine("P:\\Trading\\Acompanhamento Metereologico Semanal\\spiderman", Data.ToString("yyyy_MM_dd"), "CFS");
 
-            
+
 
             var oneDrive = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documents\Trading";
             var onedriveSpider = @"C:\Enercore\Energy Core Trading\Energy Core Pricing - Documents\Trading\Acompanhamento Metereologico Semanal\spiderman";
@@ -4677,9 +4680,9 @@ $"<p><pre></pre></p>" + $"</body></html>";
             }
 
 
-            
 
-          
+
+
 
             try
             {
@@ -4735,6 +4738,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             //string endereco = "https://www.ccee.org.br/ccee/documentos/NW" + Data.AddMonths(1).ToString("yyyyMM");
             string nomeArqNW = "NW" + DateTime.Today.AddMonths(1).ToString("yyyyMM") + ".zip";
             var downlog = "H:\\TI - Sistemas\\UAT\\Download Compass\\DownloadLog.txt";
+            var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
             var data = Tools.GetCurrRev(DateTime.Today).revDate;
 
@@ -4761,7 +4765,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 }
                 var h = readHistory(downlog).Last();
 
-                var d = Convert.ToDateTime(h);
+                var d = Convert.ToDateTime(h, Culture.DateTimeFormat);
 
                 if (d <= DateTime.Now.AddMinutes(-45))
                 {

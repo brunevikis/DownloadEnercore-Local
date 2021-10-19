@@ -38,6 +38,7 @@ namespace DownloadCompass
         public static void CopyOperusihToBaseDessem(string zip)
         {
             string pasta = zip.Split('.')[0];
+            var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
             try
             {
@@ -48,7 +49,7 @@ namespace DownloadCompass
                 {
                     var pdoOper = File.ReadAllLines(arqFile);
                     string linhadata = pdoOper.Where(x => x.Contains("Data do Caso")).First();
-                    DateTime dataRef = Convert.ToDateTime(linhadata.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Last());
+                    DateTime dataRef = Convert.ToDateTime(linhadata.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Last(), Culture.DateTimeFormat);
 
 
                     DateTime dat = dataRef;
