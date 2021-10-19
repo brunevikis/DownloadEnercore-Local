@@ -6,7 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using Captura.CapturaRDH;
+//using Captura.CapturaRDH;
 
 namespace DownloadCompass
 {
@@ -209,10 +209,11 @@ namespace DownloadCompass
 
             cli.EnableSsl = true;
 
+            receiversGroup = "desenv";
 
             var msg = new System.Net.Mail.MailMessage()
             {
-                Subject = subject,
+                Subject = subject + " LOCAL",
             };
 
 
@@ -257,24 +258,24 @@ namespace DownloadCompass
 
 
 
-        public async static void SaveRdhToDB(Rdh rdh)
-        {
-            try
-            {
-                var info = new RDHInfo();
+        //public async static void SaveRdhToDB(Rdh rdh)
+        //{
+        //    try
+        //    {
+        //        var info = new RDHInfo();
 
-                ExcelParserRDH.PreencherGeral(rdh.LocalFilePath, info);
-                ExcelParserRDH.PreencherHidraulicoHidrologica(rdh.LocalFilePath, info);
-                ExcelParserRDH.PreencherHidroenergeticaSubsistemas(rdh.LocalFilePath, info);
+        //        ExcelParserRDH.PreencherGeral(rdh.LocalFilePath, info);
+        //        ExcelParserRDH.PreencherHidraulicoHidrologica(rdh.LocalFilePath, info);
+        //        ExcelParserRDH.PreencherHidroenergeticaSubsistemas(rdh.LocalFilePath, info);
 
-                HelperRDH.GravarRDHInfo(info);
+        //        HelperRDH.GravarRDHInfo(info);
 
-            }
-            catch (Exception et)
-            {
-                //await Tools.SendMail("", "ERRO: " + et.Message, "Erro no ExcelParserRDH/PreencherGeral [AUTO]", "desenv");
-            }
-        }
+        //    }
+        //    catch (Exception et)
+        //    {
+        //        //await Tools.SendMail("", "ERRO: " + et.Message, "Erro no ExcelParserRDH/PreencherGeral [AUTO]", "desenv");
+        //    }
+        //}
     }
 
     public class Rdh

@@ -38,8 +38,9 @@ namespace DownloadCompass
                 var totalColumns = myWorksheet.Dimension.End.Column;
 
                 var sb = new StringBuilder(); //this is your data 
+                var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
-                DateTime data_ipdo = Convert.ToDateTime(myWorksheet.Cells["X6"].Value.ToString());
+                DateTime data_ipdo = Convert.ToDateTime(myWorksheet.Cells["X6"].Value.ToString(), Culture.DateTimeFormat);
                 int prod_itaipu = Convert.ToInt32(myWorksheet.Cells["O9"].Value.ToString());
                 int prod_nuclear = Convert.ToInt32(myWorksheet.Cells["O10"].Value.ToString());
 
