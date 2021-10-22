@@ -5072,7 +5072,16 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                             atualiza_psat_modelos(PathPsath, pastaPsat, dataInicio, dataFinal);
 
-                            //atualiza_psat_modelos(PathPsath, pastaPsat, dataInicio, dataFinal, "_Shadow");
+                            try
+                            {
+                                atualiza_psat_modelos(PathPsath, pastaPsat, dataInicio, dataFinal, "_Shadow");
+
+                            }
+                            catch (Exception e)
+                            {
+
+                                e.ToString();
+                            }
 
 
                             if (Directory.Exists(Path.Combine(PathPsath, pastaPsat + "repo")))
