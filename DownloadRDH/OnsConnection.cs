@@ -285,6 +285,7 @@ namespace DownloadCompass
 
         public async Task downWeol(string address)
         {
+            
             //Deck_Previsao_20210409.zip
             byte[] content = null;
             string nameArq = $"Deck_Previsao_{Data:yyyyMMdd}.zip";
@@ -5365,7 +5366,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
 
                     File.Delete(Path.Combine(pastaTemp, "Configuracao.xlsx"));
-                    DirectoryCopy(pastaTemp, pastaDest, true);
+                    DirectoryCopy(pastaTemp, pastaDest, true, "Observado");
 
 
 
@@ -5455,6 +5456,54 @@ $"<p><pre></pre></p>" + $"</body></html>";
             */
         }
 
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs, string dontCopy = "")
+        {
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the source directory does not exist, throw an exception.
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory does not exist, create it.
+            if (!Directory.Exists(destDirName) && dontCopy != "" && !destDirName.Contains(dontCopy))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the file contents of the directory to copy.
+            FileInfo[] files = dir.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                // Create the path to the new copy of the file.
+                string temppath = Path.Combine(destDirName, file.Name);
+
+                // Copy the file.
+                if (!file.DirectoryName.Contains(dontCopy) && dontCopy != "")
+                {
+                    file.CopyTo(temppath, true);
+
+                }
+            }
+
+            // If copySubDirs is true, copy the subdirectories.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    // Create the subdirectory.
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+
+                    // Copy the subdirectories.
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs, dontCopy);
+                }
+            }
+        }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
