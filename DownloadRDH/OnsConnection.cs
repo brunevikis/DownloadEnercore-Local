@@ -4296,8 +4296,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                             var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(path, fileInside.Split('.')[0]));
                                             if (startTuple != null)
                                             {
-                                                var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
-                                                tup.WaitForExit();
+                                                //var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
+                                                //tup.WaitForExit();
                                                 await Tools.SendMail("", "Sucesso ao baixar e converter deck", "  DECOMP Preliminar[AUTO]", "preco");
                                             }
                                             else
@@ -4896,8 +4896,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                 var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(pathDest, nomeMes, FileName.Split('.').First()));
                                 if (startTuple != null)
                                 {
-                                    var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
-                                    tup.WaitForExit();
+                                    //var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
+                                    //tup.WaitForExit();
                                 }
                                 else
                                 {
