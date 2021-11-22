@@ -16,14 +16,14 @@ namespace DownloadCompass
         public static int id_ipdo = 0;
         public static double[,] termo = new double[5, 15];
 
-        public void LoadProcess(string PathFileName)
+        public void LoadProcess(string PathFileName, DateTime dta)
         {
-            carregaIPDO(PathFileName, "local");
+            carregaIPDO(PathFileName, dta, "local");
             GerTerm(PathFileName, "local");
             IPDO_Sub(PathFileName, "local");
         }
 
-        public static void carregaIPDO(string PathFileName, string banco = "local")
+        public static void carregaIPDO(string PathFileName,DateTime dta, string banco = "local")
         {
 
 
@@ -40,7 +40,8 @@ namespace DownloadCompass
                 var sb = new StringBuilder(); //this is your data 
                 var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
-                DateTime data_ipdo = Convert.ToDateTime(myWorksheet.Cells["X6"].Value.ToString(), Culture.DateTimeFormat);
+                //DateTime data_ipdo = Convert.ToDateTime(myWorksheet.Cells["X6"].Value.ToString(), Culture.DateTimeFormat);
+                DateTime data_ipdo = dta;
                 int prod_itaipu = Convert.ToInt32(myWorksheet.Cells["O9"].Value.ToString());
                 int prod_nuclear = Convert.ToInt32(myWorksheet.Cells["O10"].Value.ToString());
 

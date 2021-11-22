@@ -478,7 +478,7 @@ namespace DownloadCompass
                             addHistory(Path.Combine(ipdoPath, "IPDO_History.txt"), "Download_Compass" + nameFile + DateTime.Now.ToString(" dd-MM-yyyy HH:mm:ss"));
 
                             IPDODB ipdoDb = new IPDODB();
-                            ipdoDb.LoadProcess(full_Path);
+                            ipdoDb.LoadProcess(full_Path, Data.AddDays(-1));
                             //var tup = System.Diagnostics.Process.Start(@"H:\TI - Sistemas\UAT\IPDO\Application Files\CurrentVersion\IPDO_Compass.exe", full_Path);
                             //tup.WaitForExit();
                             await Tools.SendMail(
