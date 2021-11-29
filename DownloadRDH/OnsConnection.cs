@@ -4031,7 +4031,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                 var d = Convert.ToDateTime(h,Culture.DateTimeFormat);
 
-                if (d <= DateTime.Now.AddMinutes(-45) && DateTime.Now > DateTime.Today.AddHours(12))
+                if (d <= DateTime.Now.AddMinutes(-45) && DateTime.Now > DateTime.Today.AddHours(8))
                 {
                     addHistory(downlog, DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
 
