@@ -147,7 +147,7 @@ namespace DownloadCompass
                 var totalRows = myWorksheet.Dimension.End.Row;
                 var totalColumns = myWorksheet.Dimension.End.Column;
 
-                for (int i = 469; i <= 576; i++)
+                for (int i = 468; i <= 576; i++)
                 {
                     try
                     {
@@ -194,22 +194,24 @@ namespace DownloadCompass
 
                 for (int i = 261; i <= 286; i++)
                 {
-                    usina = myWorksheet.Cells["A" + i].Value.ToString();
-                    if (usina != "")
+                    try
                     {
-                        valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
-                        valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
-                        tipo = myWorksheet.Cells["C" + i].Value.ToString();
-                        tipo_int = verifica_tipo(tipo);
-
-
-                        submercado = "1";
-                        if (tipo_int != 0)
+                        usina = myWorksheet.Cells["A" + i].Value.ToString();
+                        if (usina != "")
                         {
-                            termo[1, tipo_int] = termo[1, tipo_int] + valor_verificado;
-                            IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
-                            string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
-                            object[,] valores = new object[1, 6]    {
+                            valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
+                            valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
+                            tipo = myWorksheet.Cells["C" + i].Value.ToString();
+                            tipo_int = verifica_tipo(tipo);
+
+
+                            submercado = "1";
+                            if (tipo_int != 0)
+                            {
+                                termo[1, tipo_int] = termo[1, tipo_int] + valor_verificado;
+                                IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
+                                string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
+                                object[,] valores = new object[1, 6]    {
                                                         {
                                                             id_ipdo,
                                                             usina,
@@ -219,34 +221,43 @@ namespace DownloadCompass
                                                             valor_prog
                                                         }
                                                     };
-                            string tabela = "[dbo].[IPDO_gerTerm]";
-                            objSQL.Insert(tabela, campos, valores);
+                                string tabela = "[dbo].[IPDO_gerTerm]";
+                                objSQL.Insert(tabela, campos, valores);
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+
+
+                    }
+
 
 
                 }
 
                 for (int i = 317; i <= 325; i++)
                 {
-                    usina = myWorksheet.Cells["A" + i].Value.ToString();
-
-                    if (usina != "")
+                    try
                     {
+                        usina = myWorksheet.Cells["A" + i].Value.ToString();
 
-                        valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
-                        valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
-                        tipo = myWorksheet.Cells["C" + i].Value.ToString();
-                        tipo_int = verifica_tipo(tipo);
-
-                        termo[2, tipo_int] = termo[2, tipo_int] + valor_verificado;
-
-                        submercado = "2";
-                        if (tipo_int != 0)
+                        if (usina != "")
                         {
-                            IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
-                            string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
-                            object[,] valores = new object[1, 6]    {
+
+                            valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
+                            valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
+                            tipo = myWorksheet.Cells["C" + i].Value.ToString();
+                            tipo_int = verifica_tipo(tipo);
+
+                            termo[2, tipo_int] = termo[2, tipo_int] + valor_verificado;
+
+                            submercado = "2";
+                            if (tipo_int != 0)
+                            {
+                                IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
+                                string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
+                                object[,] valores = new object[1, 6]    {
                                                         {
                                                             id_ipdo,
                                                             usina,
@@ -256,31 +267,40 @@ namespace DownloadCompass
                                                             valor_prog
                                                         }
                                                     };
-                            string tabela = "[dbo].[IPDO_gerTerm]";
-                            objSQL.Insert(tabela, campos, valores);
+                                string tabela = "[dbo].[IPDO_gerTerm]";
+                                objSQL.Insert(tabela, campos, valores);
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+
+
+                    }
+
                 }
 
                 for (int i = 336; i <= 360; i++)
                 {
-                    usina = myWorksheet.Cells["A" + i].Value.ToString();
-
-                    if (usina != "")
+                    try
                     {
-                        valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
-                        valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
-                        tipo = myWorksheet.Cells["C" + i].Value.ToString();
-                        tipo_int = verifica_tipo(tipo);
+                        usina = myWorksheet.Cells["A" + i].Value.ToString();
 
-                        termo[3, tipo_int] = termo[3, tipo_int] + valor_verificado;
-
-                        submercado = "3";
-                        if (tipo_int != 0)
+                        if (usina != "")
                         {
-                            IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
-                            string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
-                            object[,] valores = new object[1, 6]    {
+                            valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
+                            valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
+                            tipo = myWorksheet.Cells["C" + i].Value.ToString();
+                            tipo_int = verifica_tipo(tipo);
+
+                            termo[3, tipo_int] = termo[3, tipo_int] + valor_verificado;
+
+                            submercado = "3";
+                            if (tipo_int != 0)
+                            {
+                                IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
+                                string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
+                                object[,] valores = new object[1, 6]    {
                                                         {
                                                             id_ipdo,
                                                             usina,
@@ -290,32 +310,42 @@ namespace DownloadCompass
                                                             valor_prog
                                                         }
                                                     };
-                            string tabela = "[dbo].[IPDO_gerTerm]";
-                            objSQL.Insert(tabela, campos, valores);
+                                string tabela = "[dbo].[IPDO_gerTerm]";
+                                objSQL.Insert(tabela, campos, valores);
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+
+
+                    }
+
 
                 }
 
                 for (int i = 379; i <= 393; i++)
                 {
-                    usina = myWorksheet.Cells["A" + i].Value.ToString();
-
-                    valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
-                    valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
-                    tipo = myWorksheet.Cells["C" + i].Value.ToString();
-                    tipo_int = verifica_tipo(tipo);
-
-
-
-                    termo[4, tipo_int] = termo[4, tipo_int] + valor_verificado;
-
-                    submercado = "4";
-                    if (tipo_int != 0)
+                    try
                     {
-                        IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
-                        string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
-                        object[,] valores = new object[1, 6]    {
+                        usina = myWorksheet.Cells["A" + i].Value.ToString();
+                        if (usina != "")
+                        {
+                            valor_verificado = Convert.ToDouble(myWorksheet.Cells["G" + i].Value.ToString());
+                            valor_prog = Convert.ToDouble(myWorksheet.Cells["F" + i].Value.ToString());
+                            tipo = myWorksheet.Cells["C" + i].Value.ToString();
+                            tipo_int = verifica_tipo(tipo);
+
+
+
+                            termo[4, tipo_int] = termo[4, tipo_int] + valor_verificado;
+
+                            submercado = "4";
+                            if (tipo_int != 0)
+                            {
+                                IDB objSQL = new SQLServerDBCompass(banco, "IPDO");
+                                string[] campos = { "[id_ipdo]", "[usina]", "[tipo]", "[valor_verif]", "[submercado]", "[valor_prog]" };
+                                object[,] valores = new object[1, 6]    {
                                                         {
                                                             id_ipdo,
                                                             usina,
@@ -325,9 +355,19 @@ namespace DownloadCompass
                                                             valor_prog
                                                         }
                                                     };
-                        string tabela = "[dbo].[IPDO_gerTerm]";
-                        objSQL.Insert(tabela, campos, valores);
+                                string tabela = "[dbo].[IPDO_gerTerm]";
+                                objSQL.Insert(tabela, campos, valores);
+                            }
+                        }
+
+
                     }
+                    catch (Exception e)
+                    {
+
+
+                    }
+
 
                 }
 
@@ -403,10 +443,10 @@ namespace DownloadCompass
                 int termVeri_NE = Convert.ToInt32(myWorksheet.Cells["O28"].Value.ToString());
                 int termVeri_N = Convert.ToInt32(myWorksheet.Cells["O20"].Value.ToString());
 
-                double Dif_term_SE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H631"].Value.ToString()), 0);
-                double Dif_term_S = Math.Round(Convert.ToDouble(myWorksheet.Cells["H632"].Value.ToString()), 0);
-                double Dif_term_NE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H633"].Value.ToString()), 0);
-                double Dif_term_N = Math.Round(Convert.ToDouble(myWorksheet.Cells["H634"].Value.ToString()), 0);
+                double Dif_term_SE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H633"].Value.ToString()), 0);
+                double Dif_term_S = Math.Round(Convert.ToDouble(myWorksheet.Cells["H634"].Value.ToString()), 0);
+                double Dif_term_NE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H635"].Value.ToString()), 0);
+                double Dif_term_N = Math.Round(Convert.ToDouble(myWorksheet.Cells["H636"].Value.ToString()), 0);
 
                 double termProg_SE = termVeri_SE - Dif_term_SE;
                 double termProg_S = termVeri_S - Dif_term_S;
