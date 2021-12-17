@@ -443,10 +443,31 @@ namespace DownloadCompass
                 int termVeri_NE = Convert.ToInt32(myWorksheet.Cells["O28"].Value.ToString());
                 int termVeri_N = Convert.ToInt32(myWorksheet.Cells["O20"].Value.ToString());
 
-                double Dif_term_SE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H630"].Value.ToString()), 0);
-                double Dif_term_S = Math.Round(Convert.ToDouble(myWorksheet.Cells["H631"].Value.ToString()), 0);
-                double Dif_term_NE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H632"].Value.ToString()), 0);
-                double Dif_term_N = Math.Round(Convert.ToDouble(myWorksheet.Cells["H633"].Value.ToString()), 0);
+                int celNum = 1;
+                bool find = false;
+                while (find == false)
+                {
+                    for (int i = 1; i <= 700; i++)
+                    {
+                        try
+                        {
+                            string texto = myWorksheet.Cells["A" + i].Value.ToString();
+                            if (texto == "5.4 - Total de Geração Térmica das Usinas Tipo I e Tipo II-A dos submercados e do SIN")
+                            {
+                                celNum = i + 4;
+                                find = true;
+                                break;
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
+                double Dif_term_SE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H" + celNum].Value.ToString()), 0);
+                double Dif_term_S = Math.Round(Convert.ToDouble(myWorksheet.Cells["H" + (celNum + 1)].Value.ToString()), 0);
+                double Dif_term_NE = Math.Round(Convert.ToDouble(myWorksheet.Cells["H" + (celNum + 2)].Value.ToString()), 0);
+                double Dif_term_N = Math.Round(Convert.ToDouble(myWorksheet.Cells["H" + (celNum + 3)].Value.ToString()), 0);
+
 
                 double termProg_SE = termVeri_SE - Dif_term_SE;
                 double termProg_S = termVeri_S - Dif_term_S;
