@@ -4460,25 +4460,32 @@ $"<p><pre></pre></p>" + $"</body></html>";
             //decomp Oficial ccee
 
             byte[] cont = null;
-            string endereco = "https://www.ccee.org.br/ccee/documentos/DC" + DateTime.Today.ToString("yyyyMM");
-            string nomeArqDC = "DC" + DateTime.Today.ToString("yyyyMM") + ".zip";
+            //string endereco = "https://www.ccee.org.br/ccee/documentos/DC" + DateTime.Today.ToString("yyyyMM");
+            string endereco = "https://www.ccee.org.br/ccee/documentos/DC" + Data.ToString("yyyyMM");
+            //string nomeArqDC = "DC" + DateTime.Today.ToString("yyyyMM") + ".zip";
+            string nomeArqDC = "DC" + Data.ToString("yyyyMM") + ".zip";
             //string Relatorio = string.Empty;
             //string DC = string.Empty;
-            var data = Tools.GetCurrRev(DateTime.Today).revDate;
-            var rv = Tools.GetCurrRev(DateTime.Today).rev;
+           // var data = Tools.GetCurrRev(DateTime.Today).revDate;
+            var data = Tools.GetCurrRev(Data).revDate;
+            //var rv = Tools.GetCurrRev(DateTime.Today).rev;
+            var rv = Tools.GetCurrRev(Data).rev;
             var downlog = "H:\\TI - Sistemas\\UAT\\Download Compass\\DownloadDECOMP_CCEELog.txt";
 
 
             if (rv == 0)
             {
-                nomeArqDC = "DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM") + ".zip";
+               // nomeArqDC = "DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM") + ".zip";
+                nomeArqDC = "DC" + data.ToString("yyyyMM") + ".zip";
 
-                endereco = "https://www.ccee.org.br/ccee/documentos/DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM");
+                //endereco = "https://www.ccee.org.br/ccee/documentos/DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM");
+                endereco = "https://www.ccee.org.br/ccee/documentos/DC" + data.ToString("yyyyMM");
             }
 
             string mes = Tools.GetMonthNumAbrev(data.Month);
 
-            string pathDC = Path.Combine("H:\\Middle - Preço\\Resultados_Modelos\\DECOMP\\CCEE_DC", DateTime.Today.AddMonths(1).ToString("yyyy"), mes);
+            //string pathDC = Path.Combine("H:\\Middle - Preço\\Resultados_Modelos\\DECOMP\\CCEE_DC", DateTime.Today.AddMonths(1).ToString("yyyy"), mes);
+            string pathDC = Path.Combine("H:\\Middle - Preço\\Resultados_Modelos\\DECOMP\\CCEE_DC", data.ToString("yyyy"), mes);
             if (!Directory.Exists(pathDC))
             {
                 Directory.CreateDirectory(pathDC);
