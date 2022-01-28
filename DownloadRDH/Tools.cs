@@ -61,7 +61,7 @@ namespace DownloadCompass
                     var rev = Tools.GetCurrRev(datVE);
 
                     var mes = Tools.GetMonthNumAbrev(rev.revDate.Month);
-                    var dirDest = $@"Z:\7_dessem\Arquivos_base\{rev.revDate:yyyy}\{mes}\RV{rev.rev}\{dataRef:yyyyMMdd}";
+                    var dirDest = $@"X:\AWS\5_dessem\Arquivos_base\{rev.revDate:yyyy}\{mes}\RV{rev.rev}\{dataRef:yyyyMMdd}";
                     //var dir = $@"/home/compass/sacompass/previsaopld/7_dessem/Arquivos_base/{rev.revDate:yyyy}/{mes}/RV{rev.rev}/{dataRef:yyyyMMdd}";
                     if (!Directory.Exists(dirDest))
                     {
