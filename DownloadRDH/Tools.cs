@@ -210,11 +210,11 @@ namespace DownloadCompass
 
             cli.EnableSsl = true;
 
-            receiversGroup = "desenv";
+           // receiversGroup = "desenv";
 
             var msg = new System.Net.Mail.MailMessage()
             {
-                Subject = subject + " LOCAL",
+                Subject = subject,
             };
 
 
