@@ -759,6 +759,22 @@ namespace DownloadCompass
 
                     }
                 }
+                //aqui
+                var pathEntradaecmwf = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada\ECMWF");
+                string ECMWFarq = $"ECMWF_m_{Data:ddMMyy}.dat";
+                if (File.Exists(Path.Combine(ECMWFPath,ECMWFarq)))
+                {
+                    var path_Conj = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao");
+
+                    File.Copy(Path.Combine(ECMWFPath, ECMWFarq), Path.Combine(pathEntradaecmwf, ECMWFarq), true);
+
+                    if (File.Exists(Path.Combine(path_Conj, "Conjunto-PastasEArquivos.zip")))
+                    {
+                        File.Delete(Path.Combine(path_Conj, "Conjunto-PastasEArquivos.zip"));
+                    }
+                    System.IO.Compression.ZipFile.CreateFromDirectory(Path.Combine(path_Conj, "Conjunto-PastasEArquivos"), Path.Combine(path_Conj, "Conjunto-PastasEArquivos.zip"));
+                }
+
 
             }
         }
