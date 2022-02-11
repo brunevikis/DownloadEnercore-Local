@@ -4024,8 +4024,22 @@ $"<p><pre></pre></p>" + $"</body></html>";
             //https://www.ccee.org.br/ccee/documentos/DES_202011
             byte[] contCCEE = null;
             ZipArchive zfile = null;
-
+            string dessemURL = "https://www.ccee.org.br/acervo-ccee?especie=44884&periodo=365";
             string fileCCEE = $"DES_{revisao.revDate:yyyyMM}.zip";
+            string dessemHash = File.ReadAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\DessemHash.txt");
+
+            WebClient client = new WebClient();
+            string html = client.DownloadString(dessemURL);
+            var partes = html.Split( new string[] { "card-header custom d-flex align-items-center justify-content-between" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            string hashcode = "";
+            foreach (var p in partes)
+            {
+                if (p.Contains(fileCCEE))
+                {
+                     hashcode = p.Split(new string[] { "bold-light card-hash" }, StringSplitOptions.RemoveEmptyEntries).Last().Split(new string[] { "<span>" }, StringSplitOptions.RemoveEmptyEntries).Last().Split('<').First();
+                }
+            }
+
             string pastaName = $"DS_CCEE_{revisao.revDate:MMyyyy}_SEMREDE_RV{revisao.rev}D{dataSeg.Day:00}";
 
             string addressCCEE = "https://www.ccee.org.br/ccee/documentos/";
@@ -4036,105 +4050,40 @@ $"<p><pre></pre></p>" + $"</body></html>";
             var downlog = "H:\\TI - Sistemas\\UAT\\Download Compass\\DownloadLog.txt";
             string pastaVerif = Path.Combine(camHCCEEVerif, pastaName);
 
-
-            if (!Directory.Exists(pastaVerif))
+            if (dessemHash != hashcode)
             {
-                if (!File.Exists(downlog))
+                if (!Directory.Exists(pastaVerif))
                 {
-                    addHistory(downlog, DateTime.Now.AddMinutes(-40).ToString("dd-MM-yyyy HH:mm:ss"));
-
-                }
-                var h = readHistory(downlog).Last();
-
-                var d = Convert.ToDateTime(h,Culture.DateTimeFormat);
-
-                if (d <= DateTime.Now.AddMinutes(-45) && DateTime.Now > DateTime.Today.AddHours(8))
-                {
-                    addHistory(downlog, DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
-
-                    try
+                    if (!File.Exists(downlog))
                     {
-                        using (var httpClient = new HttpClient())
+                        addHistory(downlog, DateTime.Now.AddMinutes(-40).ToString("dd-MM-yyyy HH:mm:ss"));
+
+                    }
+                    var h = readHistory(downlog).Last();
+
+                    var d = Convert.ToDateTime(h, Culture.DateTimeFormat);
+
+                    if (d <= DateTime.Now.AddMinutes(-45) && DateTime.Now > DateTime.Today.AddHours(8))
+                    {
+                        addHistory(downlog, DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+
+                        try
                         {
-
-                            try
+                            using (var httpClient = new HttpClient())
                             {
-                                httpClient.Timeout = TimeSpan.FromMinutes(20);
-                                var response = await httpClient.GetAsync(urlCCEE);
-                                if (response.IsSuccessStatusCode)
+
+                                try
                                 {
-                                    contCCEE = await response.Content.ReadAsByteArrayAsync();
-
-                                    if (contCCEE != null)
+                                    httpClient.Timeout = TimeSpan.FromMinutes(20);
+                                    var response = await httpClient.GetAsync(urlCCEE);
+                                    if (response.IsSuccessStatusCode)
                                     {
-                                        try
+                                        contCCEE = await response.Content.ReadAsByteArrayAsync();
+
+                                        if (contCCEE != null)
                                         {
-                                            if (File.Exists(Path.Combine(tempFiles, fileCCEE)))
+                                            try
                                             {
-                                                File.Delete(Path.Combine(tempFiles, fileCCEE));
-                                            }
-                                            if (Directory.Exists(Path.Combine(tempFiles, fileCCEE.Split('.')[0])))
-                                            {
-                                                Directory.Delete(Path.Combine(tempFiles, fileCCEE.Split('.')[0]), true);
-                                            }
-
-                                            if (!File.Exists(Path.Combine(tempFiles, fileCCEE)))
-                                            {
-                                                bool novoArqBaixado = false;
-                                                System.IO.File.WriteAllBytes(Path.Combine(tempFiles, fileCCEE), contCCEE);
-                                                ZipFile.ExtractToDirectory(Path.Combine(tempFiles, fileCCEE), Path.Combine(tempFiles, fileCCEE.Split('.')[0]));
-
-                                                var zips = Directory.GetFiles(Path.Combine(tempFiles, fileCCEE.Split('.')[0]));
-                                                foreach (var zip in zips)
-                                                {
-                                                    var revZip = zip.Split('_').Last().Substring(0, 3);
-                                                    var NomeZip = Path.GetFileName(zip);
-                                                    var NomePasta = NomeZip.Split('.')[0];
-
-                                                    if (zip.Split('\\').Last().Contains("Resultado"))
-                                                    {
-                                                        Tools.CopyOperusihToBaseDessem(zip);
-                                                    }
-                                                    //var camZtoCCEE = $@"Z:\7_dessem\DESSEM_CCEE\{revisao.revDate:yyyy}\{mesAbrev}\{revZip}";
-                                                    var camZtoCCEE = $@"X:\AWS\5_dessem\DESSEM_CCEE\{revisao.revDate:yyyy}\{mesAbrev}\{revZip}";
-                                                    string camHCCEE = $"H:\\Middle - Preço\\Resultados_Modelos\\DESSEM\\CCEE_DS\\{revisao.revDate:yyyy}\\{mesAbrev}\\{revZip}";
-                                                    if (!Directory.Exists(camHCCEE))
-                                                    {
-                                                        Directory.CreateDirectory(camHCCEE);
-                                                    }
-                                                    if (!File.Exists(Path.Combine(camHCCEE, NomeZip)))
-                                                    {
-                                                        File.Copy(zip, Path.Combine(camHCCEE, NomeZip), true);
-                                                    }
-                                                    if (!Directory.Exists(Path.Combine(camHCCEE, NomePasta)))
-                                                    {
-                                                        ZipFile.ExtractToDirectory(Path.Combine(camHCCEE, NomeZip), Path.Combine(camHCCEE, NomePasta));
-                                                        novoArqBaixado = true;
-                                                    }
-                                                    if (!Directory.Exists(camZtoCCEE))
-                                                    {
-                                                        Directory.CreateDirectory(camZtoCCEE);
-                                                    }
-                                                    if (!Directory.Exists(Path.Combine(camZtoCCEE, NomePasta)) && !NomePasta.Contains("Resultado"))
-                                                    {
-                                                        Directory.CreateDirectory(Path.Combine(camZtoCCEE, NomePasta));
-                                                        foreach (var arq in Directory.GetFiles(Path.Combine(camHCCEE, NomePasta)).ToList())
-                                                        {
-                                                            File.Copy(arq, Path.Combine(Path.Combine(camZtoCCEE, NomePasta), arq.Split('\\').Last()));
-                                                        }
-                                                        var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(camZtoCCEE, NomePasta), " rodardessem ");
-                                                        if (startTuple != null)
-                                                        {
-                                                            var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
-                                                            tup.WaitForExit();
-                                                        }
-                                                        else
-                                                        {
-                                                            await Tools.SendMail("", "falha na chamada do processo execução", " FALHA DESSEM [AUTO]", "preco");
-
-                                                        }
-                                                    }
-                                                }
                                                 if (File.Exists(Path.Combine(tempFiles, fileCCEE)))
                                                 {
                                                     File.Delete(Path.Combine(tempFiles, fileCCEE));
@@ -4144,44 +4093,114 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                                     Directory.Delete(Path.Combine(tempFiles, fileCCEE.Split('.')[0]), true);
                                                 }
 
-                                                if (novoArqBaixado)
+                                                if (!File.Exists(Path.Combine(tempFiles, fileCCEE)))
                                                 {
-                                                    await Tools.SendMail("", "Sucesso ao baixar deck CCEE", "DESSEM CCEE [AUTO]", "preco");
+                                                    bool novoArqBaixado = false;
+                                                    System.IO.File.WriteAllBytes(Path.Combine(tempFiles, fileCCEE), contCCEE);
+                                                    ZipFile.ExtractToDirectory(Path.Combine(tempFiles, fileCCEE), Path.Combine(tempFiles, fileCCEE.Split('.')[0]));
+
+                                                    var zips = Directory.GetFiles(Path.Combine(tempFiles, fileCCEE.Split('.')[0]));
+                                                    foreach (var zip in zips)
+                                                    {
+                                                        var revZip = zip.Split('_').Last().Substring(0, 3);
+                                                        var NomeZip = Path.GetFileName(zip);
+                                                        var NomePasta = NomeZip.Split('.')[0];
+
+                                                        if (zip.Split('\\').Last().Contains("Resultado"))
+                                                        {
+                                                            Tools.CopyOperusihToBaseDessem(zip);
+                                                        }
+                                                        //var camZtoCCEE = $@"Z:\7_dessem\DESSEM_CCEE\{revisao.revDate:yyyy}\{mesAbrev}\{revZip}";
+                                                        var camZtoCCEE = $@"X:\AWS\5_dessem\DESSEM_CCEE\{revisao.revDate:yyyy}\{mesAbrev}\{revZip}";
+                                                        string camHCCEE = $"H:\\Middle - Preço\\Resultados_Modelos\\DESSEM\\CCEE_DS\\{revisao.revDate:yyyy}\\{mesAbrev}\\{revZip}";
+                                                        if (!Directory.Exists(camHCCEE))
+                                                        {
+                                                            Directory.CreateDirectory(camHCCEE);
+                                                        }
+                                                        if (!File.Exists(Path.Combine(camHCCEE, NomeZip)))
+                                                        {
+                                                            File.Copy(zip, Path.Combine(camHCCEE, NomeZip), true);
+                                                        }
+                                                        if (!Directory.Exists(Path.Combine(camHCCEE, NomePasta)))
+                                                        {
+                                                            ZipFile.ExtractToDirectory(Path.Combine(camHCCEE, NomeZip), Path.Combine(camHCCEE, NomePasta));
+                                                            novoArqBaixado = true;
+                                                        }
+                                                        if (!Directory.Exists(camZtoCCEE))
+                                                        {
+                                                            Directory.CreateDirectory(camZtoCCEE);
+                                                        }
+                                                        if (!Directory.Exists(Path.Combine(camZtoCCEE, NomePasta)) && !NomePasta.Contains("Resultado"))
+                                                        {
+                                                            Directory.CreateDirectory(Path.Combine(camZtoCCEE, NomePasta));
+                                                            foreach (var arq in Directory.GetFiles(Path.Combine(camHCCEE, NomePasta)).ToList())
+                                                            {
+                                                                File.Copy(arq, Path.Combine(Path.Combine(camZtoCCEE, NomePasta), arq.Split('\\').Last()));
+                                                            }
+                                                            var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(camZtoCCEE, NomePasta), " rodardessem ");
+                                                            if (startTuple != null)
+                                                            {
+                                                                var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
+                                                                tup.WaitForExit();
+                                                            }
+                                                            else
+                                                            {
+                                                                await Tools.SendMail("", "falha na chamada do processo execução", " FALHA DESSEM [AUTO]", "preco");
+
+                                                            }
+                                                        }
+                                                    }
+                                                    if (File.Exists(Path.Combine(tempFiles, fileCCEE)))
+                                                    {
+                                                        File.Delete(Path.Combine(tempFiles, fileCCEE));
+                                                    }
+                                                    if (Directory.Exists(Path.Combine(tempFiles, fileCCEE.Split('.')[0])))
+                                                    {
+                                                        Directory.Delete(Path.Combine(tempFiles, fileCCEE.Split('.')[0]), true);
+                                                    }
+
+                                                    if (novoArqBaixado)
+                                                    {
+                                                        await Tools.SendMail("", "Sucesso ao baixar deck CCEE", "DESSEM CCEE [AUTO]", "preco");
+
+                                                    }
 
                                                 }
-
                                             }
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            if (File.Exists(Path.Combine(tempFiles, fileCCEE)))
+                                            catch (Exception e)
                                             {
-                                                File.Delete(Path.Combine(tempFiles, fileCCEE));
+                                                if (File.Exists(Path.Combine(tempFiles, fileCCEE)))
+                                                {
+                                                    File.Delete(Path.Combine(tempFiles, fileCCEE));
+                                                }
+                                                if (Directory.Exists(Path.Combine(tempFiles, fileCCEE.Split('.')[0])))
+                                                {
+                                                    Directory.Delete(Path.Combine(tempFiles, fileCCEE.Split('.')[0]), true);
+                                                }
                                             }
-                                            if (Directory.Exists(Path.Combine(tempFiles, fileCCEE.Split('.')[0])))
-                                            {
-                                                Directory.Delete(Path.Combine(tempFiles, fileCCEE.Split('.')[0]), true);
-                                            }
-                                        }
 
+                                        }
                                     }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                // Erro "O registro Final de Diretório Central não foi localizado." é devido o site da CCEE está fora do Ar
-                                // await Tools.SendMail("", "Falha ao tentar baixar ou descompactar <\\br>Exception:" + e.Message, " FALHA no deck DESSEM CCEE [AUTO]", "desenv");
-                            }
+                                catch (Exception e)
+                                {
+                                    // Erro "O registro Final de Diretório Central não foi localizado." é devido o site da CCEE está fora do Ar
+                                    // await Tools.SendMail("", "Falha ao tentar baixar ou descompactar <\\br>Exception:" + e.Message, " FALHA no deck DESSEM CCEE [AUTO]", "desenv");
+                                }
 
+
+                            }
 
                         }
-
-                    }
-                    catch (Exception e)
-                    {
+                        catch (Exception e)
+                        {
+                        }
                     }
                 }
+                File.WriteAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\DessemHash.txt", hashcode);
             }
+
+            
 
 
 
