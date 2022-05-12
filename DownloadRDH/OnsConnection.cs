@@ -285,7 +285,7 @@ namespace DownloadCompass
 
         public async Task downWeol(string address)
         {
-            
+
             //Deck_Previsao_20210409.zip
             byte[] content = null;
             string nameArq = $"Deck_Previsao_{Data:yyyyMMdd}.zip";
@@ -762,7 +762,7 @@ namespace DownloadCompass
                 //aqui
                 var pathEntradaecmwf = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao\Conjunto-PastasEArquivos\Arq_Entrada\ECMWF");
                 string ECMWFarq = $"ECMWF_m_{Data:ddMMyy}.dat";
-                if (File.Exists(Path.Combine(ECMWFPath,ECMWFarq)))
+                if (File.Exists(Path.Combine(ECMWFPath, ECMWFarq)))
                 {
                     var path_Conj = Path.Combine(@"H:\Middle - Preço\16_Chuva_Vazao");
 
@@ -2703,6 +2703,78 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
         }
 
+        private async Task DownloadGovNoticias()
+        {
+            try
+            {
+                string GovURL = "https://www.gov.br/mme/pt-br/assuntos/noticias";
+                bool envio = false;
+                string ahref = "";
+
+                string html = @"
+            <html> 
+                <head>
+                    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+                </head>
+                <body>
+                    <div style=' padding: 10px; left: 20%; right: 20%; width: auto; text-align: center; border: 3px solid black;'>
+                        <h2> Boletim de Notícias do Enercore Download</h2>
+          
+                        <div style='position:page; width:600px;margin: auto; border: 3px solid black;'>
+           
+                        {0}
+                  
+                        </div>
+                  
+                    </div>
+                </body>
+            </html>
+                  ";
+
+                List<string> historico = File.ReadAllLines("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\historyGov.txt").ToList();
+                List<Tuple<string, string>> links = new List<Tuple<string, string>>();
+
+                WebClient client = new WebClient();
+                string htmltexto = client.DownloadString(GovURL);
+                var parte = htmltexto.Split(new string[] { "noticias listagem-noticias-com-foto" }, StringSplitOptions.RemoveEmptyEntries)[1].Split(new string[] { "paginacao-wrapper" }, StringSplitOptions.RemoveEmptyEntries).ToList().First();
+                File.WriteAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\tempGov.txt", parte,Encoding.UTF8);
+
+
+                var linhas = File.ReadAllLines("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\tempGov.txt", Encoding.UTF8);
+
+                foreach (var l in linhas)
+                {
+                    if (l.Contains("href"))
+                    {
+                        links.Add(new Tuple<string, string>(l.Split('"')[1], l.Split('>')[1].Replace("</a", "")));
+                    }
+                }
+
+                foreach (var link in links)
+                {
+                    if (historico.All(x => x != link.Item1))
+                    {
+                        ahref += "<a href='" + link.Item1 + "'><h4>" + link.Item2 + "</h4 ></a></br>";
+                        historico.Add(link.Item1);
+                        envio = true;
+                    }
+                }
+
+                if (envio == true)
+                {
+                    html = String.Format(html, ahref);
+                    await Tools.SendMail("", html, "Boletim de Notícias GOV.BR[AUTO]", "preco");//preco
+                    File.WriteAllLines("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\historyGov.txt", historico);
+                }
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+            }
+
+            
+        }
+
         private async Task<List<Evento>> GetAtualizacoesPub(List<string> history)
         {
 
@@ -4030,13 +4102,13 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
             WebClient client = new WebClient();
             string html = client.DownloadString(dessemURL);
-            var partes = html.Split( new string[] { "card-header custom d-flex align-items-center justify-content-between" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var partes = html.Split(new string[] { "card-header custom d-flex align-items-center justify-content-between" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             string hashcode = "";
             foreach (var p in partes)
             {
                 if (p.Contains(fileCCEE))
                 {
-                     hashcode = p.Split(new string[] { "bold-light card-hash" }, StringSplitOptions.RemoveEmptyEntries).Last().Split(new string[] { "<span>" }, StringSplitOptions.RemoveEmptyEntries).Last().Split('<').First();
+                    hashcode = p.Split(new string[] { "bold-light card-hash" }, StringSplitOptions.RemoveEmptyEntries).Last().Split(new string[] { "<span>" }, StringSplitOptions.RemoveEmptyEntries).Last().Split('<').First();
                 }
             }
 
@@ -4200,7 +4272,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 File.WriteAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\DessemHash.txt", hashcode);
             }
 
-            
+
 
 
 
@@ -4503,7 +4575,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string nomeArqDC = "DC" + Data.ToString("yyyyMM") + ".zip";
             //string Relatorio = string.Empty;
             //string DC = string.Empty;
-           // var data = Tools.GetCurrRev(DateTime.Today).revDate;
+            // var data = Tools.GetCurrRev(DateTime.Today).revDate;
             var data = Tools.GetCurrRev(Data).revDate;
             //var rv = Tools.GetCurrRev(DateTime.Today).rev;
             var rv = Tools.GetCurrRev(Data).rev;
@@ -4512,7 +4584,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
             if (rv == 0)
             {
-               // nomeArqDC = "DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM") + ".zip";
+                // nomeArqDC = "DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM") + ".zip";
                 nomeArqDC = "DC" + data.ToString("yyyyMM") + ".zip";
 
                 //endereco = "https://www.ccee.org.br/ccee/documentos/DC" + DateTime.Today.AddMonths(1).ToString("yyyyMM");
@@ -5601,6 +5673,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
         public async Task DownloadNoticias()
         {
+            await DownloadGovNoticias();
+
             var h = readHistory("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\history.txt").ToList();
             string atts = "";
             string html = string.Empty;
@@ -5622,7 +5696,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 </head>
                 <body>
                     <div style=' padding: 10px; left: 20%; right: 20%; width: auto; text-align: center; border: 3px solid black;'>
-                        <h2> Boletim de Notícias do Compass Download</h2>
+                        <h2> Boletim de Notícias do Enercore Download</h2>
           
                         <div style='position:page; width:600px;margin: auto; border: 3px solid black;'>
            
