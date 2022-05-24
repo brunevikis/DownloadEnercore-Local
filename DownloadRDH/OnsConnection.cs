@@ -3096,6 +3096,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             try
             {
                 DateTime data_Cpins = Data;
+                DateTime data_MPV = Data;
 
                 if (content != null)
                 {
@@ -3127,6 +3128,27 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                                     CPINSDirectoryCopy(d, Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS"), true, data_Cpins);
                                 }
+
+                            }
+                            else
+                            {
+                                string dest = Path.Combine(MCVPath, "Modelos_Chuva_Vazao", name);
+                                foreach (string dirPath in Directory.GetDirectories(d, "*",
+                                                  SearchOption.AllDirectories))
+                                    Directory.CreateDirectory(dirPath.Replace(d, dest));
+
+                                foreach (string newPath in Directory.GetFiles(d, ".",
+                                   SearchOption.AllDirectories))
+                                {
+                                    if (newPath.Contains("MPV.xls"))
+                                    {
+                                        string planName = newPath.Split('\\').Last();
+                                        string planNewName = data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls";
+                                        File.Copy(newPath, newPath.Replace(d, dest).Replace(planName, planNewName), true);
+
+                                    }
+                                    File.Copy(newPath, newPath.Replace(d, dest), true);
+                                }
                             }
                         }
                         if (Directory.Exists(MCVPathExtraido))
@@ -3141,6 +3163,12 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         var Arq_Xls2 = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), "Planilha*");
 
                         File.Move(Arq_Xls2[0], Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida", data_Cpins.ToString("dd-MM-yyyy") + "_Planilha_USB.xls"));
+
+                        string planMPV = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), "*", SearchOption.AllDirectories).Where(x => x.Contains("MPV.xls")).FirstOrDefault();
+                        string planNameMPV = Path.GetFileName(planMPV);
+
+                        File.Move(planMPV, planMPV.Replace(planNameMPV, data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls"));
+
                     }
 
 
@@ -3154,6 +3182,13 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         Xls_Txt(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), Arq_Xls[0]);
 
 
+                    }
+
+                    string Arq_XlsMpv = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), "*", SearchOption.AllDirectories).Where(x => x.EndsWith(data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls")).FirstOrDefault();
+
+                    if (Arq_XlsMpv != null)
+                    {
+                        Xls_MpvTxt(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "MPV", "Arq_Saida"), Arq_XlsMpv);
                     }
                     //modelos shadow
                     {
@@ -3357,6 +3392,63 @@ $"<p><pre></pre></p>" + $"</body></html>";
             }
 
 
+        }
+
+        public void Xls_MpvTxt(string caminho, string xls)
+        {
+            if (!Directory.Exists(caminho))
+            {
+                Directory.CreateDirectory(caminho);
+            }
+            var nomeTXT = Path.GetFileNameWithoutExtension(xls) + ".txt";
+            string saveFile = Path.Combine(caminho, nomeTXT);
+
+            Workbook wb = null;
+
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+
+
+            try
+            {
+                excel.DisplayAlerts = false;
+                excel.Visible = true;
+                excel.ScreenUpdating = true;
+                Workbook workbook = excel.Workbooks.Open(xls);
+                //Worksheet sheet = workbook.Worksheets["CPINS Naturais"];
+                //Range range = sheet.UsedRange;
+
+                wb = excel.ActiveWorkbook;
+                //Worksheet ws = wb.Worksheets["CPINS Naturais"] as Microsoft.Office.Interop.Excel.Worksheet;
+                var datas = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["A2", "A61"].Value2 as object[,];
+
+                var Incremental = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["AB2", "AB61"].Value as object[,];
+                var Natural = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["AC2", "AC61"].Value as object[,];
+                // ws.Activate(); ;
+                //Range range =ws.UsedRange;
+
+
+                List<string> linhas = new List<string>();
+
+                for (int i = 1; i <= datas.GetLength(0); i++)
+                {
+                    // DateTime data = Convert.ToDateTime(datas[i, 1].ToString());
+                    linhas.Add(datas[i, 1].ToString() + ";" + Incremental[i, 1].ToString() + ";" + Natural[i, 1].ToString());
+                }
+
+                foreach (string linha in linhas)
+                {
+                    addHistory(saveFile, linha);
+
+                }
+
+                wb.Close();
+                excel.Quit();
+            }
+            catch (Exception e)
+            {
+                wb.Close();
+                excel.Quit();
+            }
         }
 
         public void Xls_Txt(string path, string caminhoXls)
