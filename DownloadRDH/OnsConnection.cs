@@ -4214,8 +4214,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
             var downlog = "H:\\TI - Sistemas\\UAT\\Download Compass\\DownloadLog.txt";
             string pastaVerif = Path.Combine(camHCCEEVerif, pastaName);
 
-            if (dessemHash != hashcode)
-            {
+            //if (dessemHash != hashcode)
+           // {
                 if (!Directory.Exists(pastaVerif))
                 {
                     if (!File.Exists(downlog))
@@ -4361,8 +4361,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         }
                     }
                 }
-                File.WriteAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\DessemHash.txt", hashcode);
-            }
+                //File.WriteAllText("H:\\TI - Sistemas\\UAT\\Download Compass\\Temp Files\\DessemHash.txt", hashcode);
+           // }
 
 
 
