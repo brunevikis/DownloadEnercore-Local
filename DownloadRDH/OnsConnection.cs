@@ -3140,7 +3140,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                 foreach (string newPath in Directory.GetFiles(d, ".",
                                    SearchOption.AllDirectories))
                                 {
-                                    if (newPath.Contains("MPV.xls"))
+                                    if (newPath.Contains("PlanilhaUSB.xls"))
                                     {
                                         string planName = newPath.Split('\\').Last();
                                         string planNewName = data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls";
@@ -3160,11 +3160,11 @@ $"<p><pre></pre></p>" + $"</body></html>";
                     else
                     {
                         System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPath);
-                        var Arq_Xls2 = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), "Planilha*");
+                        //var Arq_Xls2 = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), "Planilha*");
 
-                        File.Move(Arq_Xls2[0], Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida", data_Cpins.ToString("dd-MM-yyyy") + "_Planilha_USB.xls"));
+                        //File.Move(Arq_Xls2[0], Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida", data_Cpins.ToString("dd-MM-yyyy") + "_Planilha_USB.xls"));
 
-                        string planMPV = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), "*", SearchOption.AllDirectories).Where(x => x.Contains("MPV.xls")).FirstOrDefault();
+                        string planMPV = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), "*", SearchOption.AllDirectories).Where(x => x.Contains("PlanilhaUSB.xls")).FirstOrDefault();
                         string planNameMPV = Path.GetFileName(planMPV);
 
                         File.Move(planMPV, planMPV.Replace(planNameMPV, data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls"));
@@ -3173,16 +3173,16 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
 
 
-                    var pathResult = Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida");
-                    var Arq_Xls = Directory.GetFiles(pathResult, data_Cpins.ToString("dd-MM-yyyy") + "_Planilha*");
+                    //var pathResult = Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida");
+                    //var Arq_Xls = Directory.GetFiles(pathResult, data_Cpins.ToString("dd-MM-yyyy") + "_Planilha*");
 
-                    if (Arq_Xls != null)
-                    {
+                    //if (Arq_Xls != null)
+                   // {
 
-                        Xls_Txt(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), Arq_Xls[0]);
+                    //    Xls_Txt(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), Arq_Xls[0]);
 
 
-                    }
+                   // }
 
                     string Arq_XlsMpv = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), "*", SearchOption.AllDirectories).Where(x => x.EndsWith(data_MPV.ToString("dd-MM-yyyy") + "_PlanilhaUSB_MPV.xls")).FirstOrDefault();
 
@@ -3419,10 +3419,10 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                 wb = excel.ActiveWorkbook;
                 //Worksheet ws = wb.Worksheets["CPINS Naturais"] as Microsoft.Office.Interop.Excel.Worksheet;
-                var datas = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["A2", "A61"].Value2 as object[,];
+                var datas = wb.Worksheets["PlanilhaUSB.xls"].Range["A2", "A61"].Value2 as object[,];
 
-                var Incremental = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["AB2", "AB61"].Value as object[,];
-                var Natural = wb.Worksheets["PlanilhaUSB_MPV.xls"].Range["AC2", "AC61"].Value as object[,];
+                var Incremental = wb.Worksheets["PlanilhaUSB.xls"].Range["AB2", "AB61"].Value as object[,];
+                var Natural = wb.Worksheets["PlanilhaUSB.xls"].Range["AC2", "AC61"].Value as object[,];
                 // ws.Activate(); ;
                 //Range range =ws.UsedRange;
 
