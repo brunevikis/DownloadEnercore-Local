@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DownloadCompass</RootNamespace>
-    <AssemblyName>DownloadCompass</AssemblyName>
+    <AssemblyName>DownloadEnercore</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>270</ApplicationRevision>
+    <ApplicationRevision>271</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,6 +60,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Folder_Download_Brown_39641.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -217,6 +220,7 @@
       <DependentUpon>Consulta.edmx</DependentUpon>
       <LastGenOutput>Consulta.cs</LastGenOutput>
     </Content>
+    <Content Include="Folder_Download_Brown_39641.ico" />
     <Content Include="mysql.data.dll" />
     <Content Include="mysql.data.entity.dll" />
   </ItemGroup>

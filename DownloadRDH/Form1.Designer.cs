@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button3 = new System.Windows.Forms.Button();
             this.DownRDH = new System.Windows.Forms.Button();
             this.mes = new System.Windows.Forms.ComboBox();
@@ -39,6 +40,7 @@
             this.dia = new System.Windows.Forms.ComboBox();
             this.DownChuvaVazao = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.weol = new System.Windows.Forms.Button();
             this.Carga_Hr = new System.Windows.Forms.Button();
             this.bt_cargaDiaria = new System.Windows.Forms.Button();
             this.DownDessem = new System.Windows.Forms.Button();
@@ -65,7 +67,6 @@
             this.DownGefs = new System.Windows.Forms.Button();
             this.DownEta = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.weol = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ano)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -274,6 +275,19 @@
             this.panel1.Size = new System.Drawing.Size(150, 513);
             this.panel1.TabIndex = 21;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel1_Paint);
+            // 
+            // weol
+            // 
+            this.weol.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.weol.Enabled = false;
+            this.weol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.weol.Location = new System.Drawing.Point(75, 479);
+            this.weol.Name = "weol";
+            this.weol.Size = new System.Drawing.Size(71, 24);
+            this.weol.TabIndex = 47;
+            this.weol.Text = "WEOL";
+            this.weol.UseVisualStyleBackColor = false;
+            this.weol.Click += new System.EventHandler(this.weol_Click);
             // 
             // Carga_Hr
             // 
@@ -610,19 +624,6 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "Donwload Sintegre";
             // 
-            // weol
-            // 
-            this.weol.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.weol.Enabled = false;
-            this.weol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.weol.Location = new System.Drawing.Point(75, 479);
-            this.weol.Name = "weol";
-            this.weol.Size = new System.Drawing.Size(71, 24);
-            this.weol.TabIndex = 47;
-            this.weol.Text = "WEOL";
-            this.weol.UseVisualStyleBackColor = false;
-            this.weol.Click += new System.EventHandler(this.weol_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -636,10 +637,11 @@
             this.Controls.Add(this.ano);
             this.Controls.Add(this.mes);
             this.Controls.Add(this.button3);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Download Compass";
+            this.Text = "Download Enercore";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ano)).EndInit();
             this.panel1.ResumeLayout(false);
