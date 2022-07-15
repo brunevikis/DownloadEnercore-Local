@@ -3019,6 +3019,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
         public async Task DownloadModelosChuvaVazao(string addressDownload)
         {
             //Xls_Txt(@"N:\Middle - Preço\Acompanhamento de vazões\04_2020\Dados_de_Entrada_e_Saida_202004_RV2\Modelos_Chuva_Vazao\CPINS\Arq_Saida",Path.Combine(@"N:\Middle - Preço\Acompanhamento de vazões\04_2020\Dados_de_Entrada_e_Saida_202004_RV2\Modelos_Chuva_Vazao\CPINS\Arq_Saida", "16-04-2020_PlanilhaUSB.xls"));
+            string cTemp = @"C:\temp";
 
             byte[] content = null;
             string textoEmail = string.Empty;
@@ -3067,7 +3068,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             {
                 try
                 {
-                    content = await DownloadData(addressDownload); //Baixa o zip
+                    content = await DownloadData(addressDownload); //Baixa o zip diario
                     if (content != null)
                     {
                         MCVPath = pathRv;
@@ -3083,7 +3084,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                 try
                 {
 
-                    content = await DownloadData("https://sintegre.ons.org.br/sites/9/13/79/Produtos/239/Modelos_Chuva_Vazao_" + nextRev.revDate.ToString("yyyyMM_") + rv + ".zip"); //Baixa o zip 
+                    content = await DownloadData("https://sintegre.ons.org.br/sites/9/13/79/Produtos/239/Modelos_Chuva_Vazao_" + nextRev.revDate.ToString("yyyyMM_") + rv + ".zip"); //Baixa o zip rev
                     if (content != null)
                     {
                         MCVPath = pathNextRv;
@@ -3100,13 +3101,20 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
                 if (content != null)
                 {
+                    if (!Directory.Exists(cTemp))
+                    {
+                        Directory.CreateDirectory(cTemp);
+                    }
+
                     System.IO.File.WriteAllBytes(MCVPath + "\\" + nameFile, content);
+                    System.IO.File.WriteAllBytes(cTemp + "\\" + nameFile, content);
 
                     if (Directory.Exists(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"))) //caso ja exista a pasta Modelos_Chuva_Vazao o zip sera extraido em outra pasta e somente os arqs de entrada seram atualizados
                     {
                         // Directory.Delete(Path.Combine(MCVPath, "Modelos_Chuva_Vazao"), true);
-                        string MCVPathExtraido = Path.Combine(MCVPath, "Modelos_chuva_Vazao_Extraido");
-                        System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPathExtraido);
+                       // string MCVPathExtraido = Path.Combine(MCVPath, "Modelos_chuva_Vazao_Extraido");
+                        string MCVPathExtraido = Path.Combine(cTemp, "Modelos_chuva_Vazao_Extraido");
+                        System.IO.Compression.ZipFile.ExtractToDirectory(cTemp + "\\" + nameFile, MCVPathExtraido);
 
                         var modelos = new string[] { "SMAP", "CPINS" };
                         var dir = System.IO.Directory.GetDirectories(Path.Combine(MCVPathExtraido, "Modelos_Chuva_Vazao"));
@@ -3159,7 +3167,13 @@ $"<p><pre></pre></p>" + $"</body></html>";
                     }
                     else
                     {
-                        System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPath);
+                        //System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPath);
+                        string modelosTemp = Path.Combine(cTemp, "Modelos_Chuva_Vazao");
+                        string destPathMVC = Path.Combine(MCVPath, "Modelos_Chuva_Vazao");
+                        Directory.CreateDirectory(destPathMVC);
+                        System.IO.Compression.ZipFile.ExtractToDirectory(cTemp + "\\" + nameFile, cTemp);
+
+                        CopyDirectoryRecursively(modelosTemp, destPathMVC);
                         //var Arq_Xls2 = Directory.GetFiles(Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida"), "Planilha*");
 
                         //File.Move(Arq_Xls2[0], Path.Combine(MCVPath, "Modelos_Chuva_Vazao", "CPINS", "Arq_Saida", data_Cpins.ToString("dd-MM-yyyy") + "_Planilha_USB.xls"));
@@ -3200,8 +3214,10 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         string dest = Path.Combine(pathShadow, "SMAP");
                         string auxSmap = Path.Combine(pathShadowAux, "SMAP");
 
-                        string MCVPathExtraido = Path.Combine(MCVPath, "Modelos_chuva_Vazao_Extraido");
-                        System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPathExtraido);
+                        //string MCVPathExtraido = Path.Combine(MCVPath, "Modelos_chuva_Vazao_Extraido");
+                        string MCVPathExtraido = Path.Combine(cTemp, "Modelos_chuva_Vazao_Extraido");
+                        //System.IO.Compression.ZipFile.ExtractToDirectory(MCVPath + "\\" + nameFile, MCVPathExtraido);
+                        System.IO.Compression.ZipFile.ExtractToDirectory(cTemp + "\\" + nameFile, MCVPathExtraido);
                         var dirSmapShadowExtraido = Path.Combine(MCVPathExtraido, "Modelos_Chuva_Vazao", "SMAP_SHADOW");
 
                         if (Directory.Exists(pathShadow))
@@ -3349,6 +3365,22 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         {
                             Directory.Delete(pathShadowAux, true);
                         }
+                        if (File.Exists(cTemp + "\\" + nameFile))
+                        {
+                            File.Delete(cTemp + "\\" + nameFile);
+                        }
+                        string cTempMCVPathExtraido = Path.Combine(cTemp, "Modelos_chuva_Vazao_Extraido");
+                        string cTempMCVPath = Path.Combine(cTemp, "Modelos_chuva_Vazao");
+
+                        if (Directory.Exists(cTempMCVPathExtraido))
+                        {
+                            Directory.Delete(cTempMCVPathExtraido, true);
+                        }
+                        if (Directory.Exists(cTempMCVPath))
+                        {
+                            Directory.Delete(cTempMCVPath, true);
+                        }
+                        
 
                     }
                     textoEmail = @"Sucesso ao executar o metodo GetModeloCV do Captura ONS" +
@@ -3365,12 +3397,25 @@ $"<p><pre></pre></p>" + $"</body></html>";
             catch (Exception exc)
             {
                 string MCVPathExtraido = Path.Combine(MCVPath, "Modelos_chuva_Vazao_Extraido");
+                string cTempMCVPathExtraido = Path.Combine(cTemp, "Modelos_chuva_Vazao_Extraido");
+                string cTempMCVPath = Path.Combine(cTemp, "Modelos_chuva_Vazao");
 
                 if (Directory.Exists(MCVPathExtraido))
                 {
                     Directory.Delete(MCVPathExtraido, true);
                 }
-
+                if (Directory.Exists(cTempMCVPathExtraido))
+                {
+                    Directory.Delete(cTempMCVPathExtraido, true);
+                }
+                if (Directory.Exists(cTempMCVPath))
+                {
+                    Directory.Delete(cTempMCVPath, true);
+                }
+                if (File.Exists(cTemp + "\\" + nameFile))
+                {
+                    File.Delete(cTemp + "\\" + nameFile);
+                }
                 var pathShadowAux = Path.Combine(MCVPath, "Modelos_Chuva_Vazao_ShadowAux");
 
 
@@ -3509,7 +3554,21 @@ $"<p><pre></pre></p>" + $"</body></html>";
 
         }
 
+        private static void CopyDirectoryRecursively(string fonte, string dest)
+        {
+            if (Directory.Exists(fonte))
+            {
+                foreach (string dirPath in Directory.GetDirectories(fonte, "*",
+                                           SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(fonte, dest));
 
+                foreach (string newPath in Directory.GetFiles(fonte, ".",
+                   SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath, newPath.Replace(fonte, dest), true);
+                }
+            }
+        }
         private static void SMAPDirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
