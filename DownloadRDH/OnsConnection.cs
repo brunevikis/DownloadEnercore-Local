@@ -4224,8 +4224,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(camZ, fileName.Split('.')[0]), " dessem2ccee ");
                         if (startTuple != null)
                         {
-                            var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
-                            tup.WaitForExit();
+                           // var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
+                            //tup.WaitForExit();
                         }
                         else
                         {
@@ -4363,8 +4363,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                                                             var startTuple = OnsConnection.GetOns2CceePath(Path.Combine(camZtoCCEE, NomePasta), " rodardessem ");
                                                             if (startTuple != null)
                                                             {
-                                                                var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
-                                                                tup.WaitForExit();
+                                                                //var tup = System.Diagnostics.Process.Start(startTuple.Item1, startTuple.Item2);
+                                                                //tup.WaitForExit();
                                                             }
                                                             else
                                                             {
@@ -4442,7 +4442,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string fileInsideR = string.Empty;
             string path = string.Empty;
             string nomeMes = Data.ToString("yyyy_MM");
-            var pathNew = Path.Combine("X:\\AWS\\4_curto_prazo", nomeMes);
+            var pathNew = Path.Combine("K:\\4_curto_prazo", nomeMes);
             var revisao = Tools.GetNextRev(Data.AddDays(-1)).rev;   // caso nao de certo trocar para Tools.GetCurrRev
             var Culture = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
 
@@ -4450,7 +4450,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             if (revisao == 0)
             {
                 nomeMes = Data.AddMonths(1).ToString("yyyy_MM");
-                pathNew = Path.Combine("X:\\AWS\\4_curto_prazo", nomeMes);
+                pathNew = Path.Combine("K:\\4_curto_prazo", nomeMes);
                 pathNewave = Path.Combine(pathNew, "deck_newave_" + nomeMes + "_ccee (1)", "cortes.dat");
             }
             else
@@ -4498,7 +4498,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         for (int meses = -1; meses < 2; meses++)
                         {
                             // path = Path.Combine("L:\\6_decomp\\03_Casos", Data.AddMonths(meses).ToString("yyyy_MM"));
-                            path = Path.Combine("X:\\AWS\\4_curto_prazo", Data.AddMonths(meses).ToString("yyyy_MM"));
+                            path = Path.Combine("K:\\4_curto_prazo", Data.AddMonths(meses).ToString("yyyy_MM"));
 
                             if (!Directory.Exists(Path.Combine(path, fileInside.Split('.')[0])))
                             {
@@ -4880,8 +4880,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         ZipFile.ExtractToDirectory(Path.Combine(pathCon, fileCon + ".zip"), pathCon);
                         if (File.Exists(Path.Combine(pathCon, "Consistido", "Prevs_VE.prv")))
                         {
-                            Directory.CreateDirectory("X:\\AWS\\enercore_ctl_common\\auto\\Consistido");
-                            File.Copy(Path.Combine(pathCon, "Consistido", "Prevs_VE.prv"), "X:\\AWS\\enercore_ctl_common\\auto\\Consistido\\prevs.rv" + RVatual.rev);
+                            Directory.CreateDirectory("K:\\enercore_ctl_common\\auto\\Consistido");
+                            File.Copy(Path.Combine(pathCon, "Consistido", "Prevs_VE.prv"), "K:\\enercore_ctl_common\\auto\\Consistido\\prevs.rv" + RVatual.rev);
                         }
                     }
                     catch (Exception e) { }//TODO: implementar email ao desenv
@@ -4906,8 +4906,8 @@ $"<p><pre></pre></p>" + $"</body></html>";
                         ZipFile.ExtractToDirectory(Path.Combine(pathNao, fileNao + ".zip"), pathNao);
                         if (File.Exists(Path.Combine(pathNao, "Nao_Consistido", "Prevs_VE.prv")))
                         {
-                            Directory.CreateDirectory("X:\\AWS\\enercore_ctl_common\\auto\\Nao_Consistido");
-                            File.Copy(Path.Combine(pathNao, "Nao_Consistido", "Prevs_VE.prv"), "X:\\AWS\\enercore_ctl_common\\auto\\Nao_Consistido\\prevs.rv" + RVnext.rev);
+                            Directory.CreateDirectory("K:\\enercore_ctl_common\\auto\\Nao_Consistido");
+                            File.Copy(Path.Combine(pathNao, "Nao_Consistido", "Prevs_VE.prv"), "K:\\enercore_ctl_common\\auto\\Nao_Consistido\\prevs.rv" + RVnext.rev);
                         }
                     }
                     catch (Exception e) { }//TODO: implementar email ao desenv
@@ -5097,7 +5097,7 @@ $"<p><pre></pre></p>" + $"</body></html>";
             string pathFonte = "H:\\TI - Sistemas\\UAT\\Download Compass\\Files";
             //string pathDest = "L:\\6_decomp\\03_Casos\\";
             //string pathDest = "Z:\\6_decomp\\03_Casos\\";
-            string pathDest = "X:\\AWS\\4_curto_prazo\\";
+            string pathDest = "K:\\4_curto_prazo\\";
 
 
             string nomeMes = string.Empty;
@@ -5127,9 +5127,9 @@ $"<p><pre></pre></p>" + $"</body></html>";
                             }
 
                             //string pathDeckNw = "L:\\6_decomp\\03_Casos\\" + nomeMes + "\\Arquivos";  //local do ADTERM modificado
-                            string pathDeckNw = "X:\\AWS\\4_curto_prazo\\" + nomeMes + "\\Arquivos";  //local do ADTERM modificado
+                            string pathDeckNw = "K:\\4_curto_prazo\\" + nomeMes + "\\Arquivos";  //local do ADTERM modificado
                                                                                                       //string pastaBkp = "L:\\6_decomp\\03_Casos\\" + nomeMes + "\\pastaBkp";    //local onde o antigo ADTERM ficara salvo
-                            string pastaBkp = "X:\\AWS\\4_curto_prazo\\" + nomeMes + "\\pastaBkp";    //local onde o antigo ADTERM ficara salvo
+                            string pastaBkp = "K:\\4_curto_prazo\\" + nomeMes + "\\pastaBkp";    //local onde o antigo ADTERM ficara salvo
                             string pastaDest = Path.Combine(pathDest, nomeMes, FileName.Split('.').First());
 
                             if (Directory.Exists(pathDeckNw))
